@@ -11,6 +11,7 @@ import {
   ScrollView,
 } from "react-native";
 
+//TODO: after click on text input, permnanetly shifts everything up
 export default function CodeScreen({ navigation }: any) {
   return (
     <ImageBackground
@@ -45,7 +46,7 @@ export default function CodeScreen({ navigation }: any) {
               ></TextInput>
               <Pressable
                 style={styles.button}
-                onPress={() => navigation.navigate("Welcome")}
+                onPress={() => navigation.navigate("Party")}
               >
                 <Text
                   style={{ fontWeight: "500", color: "#fff", fontSize: 16 }}
