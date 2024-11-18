@@ -16,17 +16,31 @@ export default function WelcomeScreen({ navigation }: any) {
     >
       <View style={styles.container}>
         <View style={styles.mainContainer}>
-          <Text style={{ fontWeight: "300", fontSize: 30, marginBottom: 10 }}>
+          <Text
+            style={{
+              fontWeight: "300",
+              fontSize: 30,
+              marginBottom: 10,
+              color: "#ECE6F3",
+            }}
+          >
             Welcome To
           </Text>
-          <Text style={{ fontSize: 34, fontWeight: "500", marginBottom: 40 }}>
-            Feast Feud
+          <Text
+            style={{
+              fontSize: 40,
+              fontWeight: "500",
+              marginBottom: 20,
+              color: "#ECE6F3",
+            }}
+          >
+            Dish Duel
           </Text>
           <Pressable
             style={styles.button}
             onPress={() => navigation.navigate("Enter Code")}
           >
-            <Text style={{ color: "#E8E8FB", fontSize: 18 }}>Get Started</Text>
+            <Text style={{ color: "#3F3649", fontSize: 18 }}>Get Started</Text>
           </Pressable>
         </View>
       </View>
@@ -45,15 +59,15 @@ const styles = StyleSheet.create({
   },
   button: {
     borderRadius: 50,
-    backgroundColor: "#6120F3",
+    backgroundColor: "#B292D8",
     height: 55,
-    width: 250,
+    width: 300,
     alignItems: "center",
     justifyContent: "center",
   },
   mainContainer: {
     alignItems: "center",
-    backgroundColor: "#E8E8FB",
+    backgroundColor: "#3F3649",
     borderTopLeftRadius: 30,
     borderTopRightRadius: 30,
     width: "100%",

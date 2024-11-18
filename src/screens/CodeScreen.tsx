@@ -10,6 +10,7 @@ import {
   Platform,
   ScrollView,
 } from "react-native";
+import { bg, primary, secondary, text } from "../constants/colors";
 
 //TODO: after click on text input, permnanetly shifts everything up
 export default function CodeScreen({ navigation }: any) {
@@ -23,34 +24,41 @@ export default function CodeScreen({ navigation }: any) {
         keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         behavior={Platform.OS === "ios" ? "padding" : "height"}
       >
+        <Image
+          style={styles.img}
+          source={require("../../assets/blob3.png")}
+          blurRadius={20}
+        />
         <View>
           <View style={{ padding: 40, paddingTop: 60 }}>
-            <Text style={{ fontSize: 20, marginBottom: 30 }}>
+            <Text
+              style={{
+                fontSize: 20,
+                marginBottom: 30,
+                color: "#000",
+                opacity: 0.5,
+              }}
+            >
               Which Dish Will End on Top? Join the Fun and Find Out!
             </Text>
-            <Image
-              style={styles.img}
-              source={require("../../assets/blob.png")}
-              blurRadius={20}
-            />
+
             <View style={{ marginBottom: 100 }}>
-              <Text style={{ fontSize: 60 }}>Enter</Text>
-              <Text style={{ fontSize: 60 }}>The</Text>
-              <Text style={{ fontSize: 60 }}>Party</Text>
-              <Text style={{ fontSize: 60 }}>Code</Text>
+              <Text style={{ fontSize: 60, color: "#ECE6F3" }}>Enter</Text>
+              <Text style={{ fontSize: 60, color: "#ECE6F3" }}>The</Text>
+              <Text style={{ fontSize: 60, color: "#ECE6F3" }}>Party</Text>
+              <Text style={{ fontSize: 60, color: "#ECE6F3" }}>Code</Text>
             </View>
             <View>
               <TextInput
                 style={[styles.input, styles.shadowProp]}
                 placeholder="Enter Code Here"
+                placeholderTextColor={bg}
               ></TextInput>
               <Pressable
-                style={styles.button}
+                style={[styles.button, styles.shadowProp]}
                 onPress={() => navigation.navigate("Party")}
               >
-                <Text
-                  style={{ fontWeight: "500", color: "#fff", fontSize: 16 }}
-                >
+                <Text style={{ fontWeight: "500", color: text, fontSize: 16 }}>
                   Submit
                 </Text>
               </Pressable>
@@ -65,22 +73,21 @@ export default function CodeScreen({ navigation }: any) {
 const styles = StyleSheet.create({
   mainContainer: {
     flex: 1,
-    paddingTop: 40, // Optional: Adjust padding if needed
+    paddingTop: 40,
     justifyContent: "center",
     alignItems: "center",
+    backgroundColor: "#3F3649",
   },
   input: {
-    borderColor: "#fff",
-    borderWidth: 1,
     borderRadius: 15,
     paddingLeft: 20,
-    backgroundColor: "#fff",
+    backgroundColor: primary,
     height: 60,
     marginBottom: 20,
   },
   button: {
     borderRadius: 25,
-    backgroundColor: "#6120F3",
+    backgroundColor: secondary,
     height: 60,
     alignItems: "center",
     justifyContent: "center",
@@ -91,7 +98,8 @@ const styles = StyleSheet.create({
   },
   img: {
     position: "absolute",
-    zIndex: -1,
+    right: 0,
+    zIndex: 0,
   },
 
   shadowProp: {
