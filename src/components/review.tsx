@@ -41,9 +41,14 @@ export default function Review(props: any) {
         }}
       >
         <TextInput
-          style={styles.input}
+          style={[
+            styles.input,
+            { marginBottom: props.isKeyboardVisible ? 1000 : 0 },
+          ]}
           placeholder="Enter your review..."
           placeholderTextColor="#000"
+          onFocus={() => props.setKeyboardVisible(true)}
+          onBlur={() => props.setKeyboardVisible(false)}
         />
 
         <Pressable
@@ -74,6 +79,8 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 40,
     backgroundColor: bg,
+    flex: 1,
+    marginBottom: 100,
   },
   text: {
     color: text,

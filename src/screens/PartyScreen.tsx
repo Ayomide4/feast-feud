@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Image,
   View,
@@ -6,13 +6,18 @@ import {
   StyleSheet,
   TextInput,
   Pressable,
+  ScrollView,
+  KeyboardAvoidingView,
+  Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../assets/svg/search";
 import { testAuth } from "../api";
 import NavBar from "../components/navbar";
+import Review from "../components/review";
 
 export default function PartyScreen() {
+  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -21,55 +26,79 @@ export default function PartyScreen() {
         </Text>
       </View>
       <View style={styles.mainContainer}>
-        <View style={styles.input}>
-          <Search width={20} height={20} />
-          <TextInput
-            style={{
-              marginLeft: 10,
-              backgroundColor: "#E8E8FB",
-              width: "90%",
-              height: 30,
-            }}
-            placeholder="Search here..."
-            placeholderTextColor="#000"
-          />
-        </View>
-        <Pressable>
-          <View style={styles.card}>
-            <View
-              style={{
-                flexDirection: "row",
-                alignItems: "center",
-                marginBottom: 20,
-              }}
-            >
-              <View
+        <KeyboardAvoidingView
+          style={styles.avoid}
+          behavior={Platform.OS === "ios" ? "padding" : "height"}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
+        >
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            keyboardShouldPersistTaps="handled"
+          >
+            <View style={styles.input}>
+              <Search width={20} height={20} />
+              <TextInput
                 style={{
-                  borderRadius: "50%",
-                  backgroundColor: "#3f3649",
-                  width: 40,
-                  height: 40,
-                  alignItems: "center",
-                  justifyContent: "center",
-                  marginRight: 10,
+                  marginLeft: 10,
+                  backgroundColor: "#E8E8FB",
+                  width: "90%",
+                  height: 30,
                 }}
-              >
-                <Text style={{ color: "#fff", fontSize: 20 }}>A</Text>
-              </View>
-              <Text style={{ fontSize: 24, fontWeight: "semibold" }}>Ayo</Text>
+                placeholder="Search here..."
+                placeholderTextColor="#000"
+              />
             </View>
-            <Image
-              style={styles.img}
-              source={require("../../assets/mac.png")}
+
+            <Pressable>
+              <View style={styles.card}>
+                <View
+                  style={{
+                    flexDirection: "row",
+                    alignItems: "center",
+                    marginBottom: 20,
+                  }}
+                >
+                  <View
+                    style={{
+                      borderRadius: "50%",
+                      backgroundColor: "#3f3649",
+                      width: 40,
+                      height: 40,
+                      alignItems: "center",
+                      justifyContent: "center",
+                      marginRight: 10,
+                    }}
+                  >
+                    <Text style={{ color: "#fff", fontSize: 20 }}>A</Text>
+                  </View>
+                  <Text style={{ fontSize: 24, fontWeight: "semibold" }}>
+                    Ayo
+                  </Text>
+                </View>
+                <Image
+                  style={styles.img}
+                  source={require("../../assets/mac.png")}
+                />
+                <Text
+                  style={{
+                    fontSize: 30,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                  }}
+                >
+                  Mac & Cheese
+                </Text>
+              </View>
+            </Pressable>
+
+            <Review
+              isKeyboardVisible={isKeyboardVisible}
+              setKeyboardVisible={setKeyboardVisible}
             />
-            <Text
-              style={{ fontSize: 30, fontWeight: "bold", textAlign: "center" }}
-            >
-              Mac & Cheese
-            </Text>
-          </View>
-        </Pressable>
+          </ScrollView>
+        </KeyboardAvoidingView>
       </View>
+
       <NavBar />
     </SafeAreaView>
   );
@@ -77,15 +106,15 @@ export default function PartyScreen() {
 
 const styles = StyleSheet.create({
   container: {
+    position: "relative",
     alignItems: "center",
     backgroundColor: "#3F3649",
-    width: "100%",
-    height: "100%",
+    flex: 1,
   },
 
   mainContainer: {
+    position: "relative",
     flex: 1,
-    width: "100%",
     padding: 20,
   },
 
@@ -105,7 +134,7 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     marginTop: 30,
     padding: 10,
-    height: "80%",
+    height: 500,
   },
   img: {
     height: "70%",
@@ -123,5 +152,9 @@ const styles = StyleSheet.create({
     borderRightWidth: 50,
     borderRightColor: "transparent",
     borderStyle: "solid",
+  },
+  avoid: {
+    flex: 1,
+    position: "relative",
   },
 });
