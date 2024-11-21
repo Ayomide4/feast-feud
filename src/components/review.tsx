@@ -1,4 +1,4 @@
-import React from "react";
+import React, { forwardRef } from "react";
 import {
   View,
   Text,
@@ -16,7 +16,8 @@ import UpArrow from "../../assets/svg/up-arrow";
 import { useRef, useState } from "react";
 
 //TODO: use slide , watch a tutorial
-export default function Review(props: any) {
+
+const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
   return (
     <View style={styles.container}>
       <Text style={[styles.text, { fontSize: 26, marginBottom: 10 }]}>
@@ -41,21 +42,13 @@ export default function Review(props: any) {
         }}
       >
         <TextInput
-          style={[
-            styles.input,
-            { marginBottom: props.isKeyboardVisible ? 1000 : 0 },
-          ]}
+          style={[styles.input]}
           placeholder="Enter your review..."
           placeholderTextColor="#000"
-          onFocus={() => props.setKeyboardVisible(true)}
-          onBlur={() => props.setKeyboardVisible(false)}
+          ref={ref}
         />
 
-        <Pressable
-          onPress={() => {
-            props.setModalVisible(false);
-          }}
-        >
+        <Pressable>
           <View
             style={{
               borderRadius: 500,
@@ -72,7 +65,9 @@ export default function Review(props: any) {
       </View>
     </View>
   );
-}
+});
+
+export default Review;
 
 const styles = StyleSheet.create({
   container: {

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useRef, useState } from "react";
 import {
   Image,
   View,
@@ -17,7 +17,12 @@ import NavBar from "../components/navbar";
 import Review from "../components/review";
 
 export default function PartyScreen() {
-  const [isKeyboardVisible, setKeyboardVisible] = useState(false);
+  const reviewRef = useRef<TextInput>(null);
+  const focusInput = () => {
+    if (reviewRef.current) {
+      reviewRef.current.focus();
+    }
+  };
   return (
     <SafeAreaView style={styles.container}>
       <View>
@@ -49,7 +54,7 @@ export default function PartyScreen() {
               />
             </View>
 
-            <Pressable>
+            <Pressable onPress={focusInput}>
               <View style={styles.card}>
                 <View
                   style={{
@@ -91,10 +96,7 @@ export default function PartyScreen() {
               </View>
             </Pressable>
 
-            <Review
-              isKeyboardVisible={isKeyboardVisible}
-              setKeyboardVisible={setKeyboardVisible}
-            />
+            <Review ref={reviewRef} />
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
