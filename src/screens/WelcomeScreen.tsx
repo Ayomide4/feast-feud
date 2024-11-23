@@ -7,8 +7,13 @@ import {
   Text,
   View,
 } from "react-native";
+import { testAuth } from "../api";
 
 export default function WelcomeScreen({ navigation }: any) {
+  const handlePress = async () => {
+    navigation.navigate("Enter Code");
+    await testAuth();
+  };
   return (
     <ImageBackground
       source={require("../../assets/feast.jpg")}
@@ -36,10 +41,7 @@ export default function WelcomeScreen({ navigation }: any) {
           >
             Dish Duel
           </Text>
-          <Pressable
-            style={styles.button}
-            onPress={() => navigation.navigate("Enter Code")}
-          >
+          <Pressable style={styles.button} onPress={handlePress}>
             <Text style={{ color: "#3F3649", fontSize: 18 }}>Get Started</Text>
           </Pressable>
         </View>

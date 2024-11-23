@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef } from "react";
 import {
   Image,
   View,
@@ -12,7 +12,6 @@ import {
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../assets/svg/search";
-import { testAuth } from "../api";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
 

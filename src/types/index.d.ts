@@ -16,10 +16,9 @@ interface Dish {
 }
 
 interface Review {
-  reviewId: string;
   starRating: number;
   message: string;
-  userId: string; //anon user who sent it
+  // userId: string; //anon user who sent it
 }
 
 interface Party {
