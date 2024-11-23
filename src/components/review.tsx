@@ -15,7 +15,7 @@ import { bg, text } from "../constants/colors";
 import UpArrow from "../../assets/svg/up-arrow";
 import { useRef, useState } from "react";
 import StarFilled from "../../assets/svg/star-filled";
-import { addReview } from "../api";
+import { addReview } from "../api/index";
 
 const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
   const [target, setTarget] = useState<number | null>(null);

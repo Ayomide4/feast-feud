@@ -33,13 +33,12 @@ const styles = StyleSheet.create({
     backgroundColor: "#E8E8FB",
     borderRadius: 20,
     paddingHorizontal: 7,
-    height: "85%",
-    width: "95%",
     shadowColor: "#171717",
     shadowOffset: { width: 5, height: 0 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
     position: "relative",
+    height: 500,
   },
   img: {
     height: "85%",
@@ -51,7 +50,7 @@ const styles = StyleSheet.create({
   tag: {
     position: "absolute",
     left: 30,
-    bottom: 30,
+    bottom: 40,
     borderWidth: 1,
     borderColor: "#e8e8e8",
     borderRadius: 25,

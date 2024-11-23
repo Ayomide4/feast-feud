@@ -14,6 +14,7 @@ import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../assets/svg/search";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
+import Card from "../components/card";
 
 export default function PartyScreen() {
   const reviewRef = useRef<TextInput>(null);
@@ -31,7 +32,6 @@ export default function PartyScreen() {
       </View>
       <View style={styles.mainContainer}>
         <KeyboardAvoidingView
-          style={styles.avoid}
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={Platform.OS === "ios" ? 100 : 0}
         >
@@ -53,46 +53,8 @@ export default function PartyScreen() {
               />
             </View>
 
-            <Pressable onPress={focusInput}>
-              <View style={styles.card}>
-                <View
-                  style={{
-                    flexDirection: "row",
-                    alignItems: "center",
-                    marginBottom: 20,
-                  }}
-                >
-                  <View
-                    style={{
-                      borderRadius: "50%",
-                      backgroundColor: "#3f3649",
-                      width: 40,
-                      height: 40,
-                      alignItems: "center",
-                      justifyContent: "center",
-                      marginRight: 10,
-                    }}
-                  >
-                    <Text style={{ color: "#fff", fontSize: 20 }}>A</Text>
-                  </View>
-                  <Text style={{ fontSize: 24, fontWeight: "semibold" }}>
-                    Ayo
-                  </Text>
-                </View>
-                <Image
-                  style={styles.img}
-                  source={require("../../assets/mac.png")}
-                />
-                <Text
-                  style={{
-                    fontSize: 30,
-                    fontWeight: "bold",
-                    textAlign: "center",
-                  }}
-                >
-                  Mac & Cheese
-                </Text>
-              </View>
+            <Pressable onPress={focusInput} style={{ marginTop: 20 }}>
+              <Card />
             </Pressable>
 
             <Review ref={reviewRef} />
@@ -130,32 +92,9 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     alignItems: "center",
   },
-  card: {
-    backgroundColor: "#E8E8FB",
-    borderRadius: 20,
-    marginTop: 30,
-    padding: 10,
-    height: 500,
-  },
   img: {
     height: "70%",
     resizeMode: "cover",
     marginBottom: 10,
-  },
-  reviewBtn: {
-    marginTop: 10,
-    width: "100%",
-    borderBottomWidth: 100,
-    borderBottomColor: "red",
-    borderLeftWidth: 20,
-    borderTopLeftRadius: 50,
-    borderLeftColor: "transparent",
-    borderRightWidth: 50,
-    borderRightColor: "transparent",
-    borderStyle: "solid",
-  },
-  avoid: {
-    flex: 1,
-    position: "relative",
   },
 });
