@@ -17,11 +17,7 @@ import Search from "../../assets/svg/search";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Card from "../components/card";
-import {
-  Directions,
-  Gesture,
-  GestureDetector,
-} from "react-native-gesture-handler";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
 
 //FIXME: fix flatlist scrollview issue
 //FIXME: use margin on cards instead of padding on container around cards?
@@ -59,21 +55,48 @@ export default function PartyScreen() {
     },
   ];
 
-  const horizontalPan = Gesture.Pan()
-    .activeOffsetX([-10, 10]) // Only respond to significant horizontal movements
-    .failOffsetY([-5, 5]) // Allow vertical gestures to pass through
-    .onUpdate((event) => {
-      if (event.translationX > 0) {
-        console.log("swipe right");
-      } else {
-        console.log("swipe left");
-      }
-    });
-  // Scroll Gesture
-  const scrollGesture = Gesture.Native();
+  const renderDishes = dishes.map((dish, index) => {
+    const scale = 1 - index * 0.05; // Reduce size progressively
+    const zIndex = dishes.length - index;
 
-  // Combine both gestures
-  const combinedGesture = Gesture.Simultaneous(scrollGesture, horizontalPan);
+    return (
+      <Card
+        dishTitle={dish.dishName}
+        profileImg={dish.profileImg}
+        dishImg={dish.dishImg}
+        category={dish.category}
+        scale={scale}
+        zIndex={zIndex}
+      />
+    );
+  });
+  const [tapNumber, setTapNumber] = useState(0);
+
+  const tap = React.useMemo(
+    () =>
+      Gesture.Pan().onStart(() => {
+        console.log("Number of taps:", tapNumber + 1);
+        setTapNumber((value) => value + 1);
+      }),
+    [tapNumber, setTapNumber],
+  );
+
+  const horizontalPan = React.useMemo(
+    () =>
+      Gesture.Pan()
+        .onStart(() => {
+          console.log("Gesture started");
+        })
+        .onUpdate((e) => {
+          console.log(`Horizontal Translation: ${e.translationX}`);
+        })
+        .onEnd(() => {
+          console.log("Gesture ended");
+        })
+        .activeOffsetX([-10, 10]) // Horizontal activation threshold
+        .failOffsetY([-10, 10]), // Fail gesture if vertical movement exceeds threshold
+    [],
+  );
 
   return (
     <SafeAreaView style={styles.container}>
@@ -136,7 +159,7 @@ export default function PartyScreen() {
                 const zIndex = dishes.length - index;
 
                 return (
-                  <GestureDetector gesture={combinedGesture}>
+                  <GestureDetector gesture={horizontalPan}>
                     <Card
                       dishTitle={item.dishName}
                       profileImg={item.profileImg}

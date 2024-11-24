@@ -28,7 +28,6 @@ export default function Card({
   offsetX = 0,
   zIndex = 1,
 }: CardProps) {
-  console.log(dishTitle, zIndex);
   return (
     <Animated.View
       style={[
