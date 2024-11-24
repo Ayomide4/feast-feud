@@ -121,10 +121,10 @@ export default Review;
 const styles = StyleSheet.create({
   container: {
     alignItems: "center",
-    marginTop: 40,
     backgroundColor: bg,
     flex: 1,
     marginBottom: 100,
+    marginHorizontal: 10,
   },
   text: {
     color: text,

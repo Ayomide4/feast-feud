@@ -53,6 +53,7 @@ export default function CodeScreen({ navigation }: any) {
                 style={[styles.input, styles.shadowProp]}
                 placeholder="Enter Code Here"
                 placeholderTextColor={bg}
+                returnKeyType="done"
               ></TextInput>
               <Pressable
                 style={[styles.button, styles.shadowProp]}

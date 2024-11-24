@@ -1,23 +1,57 @@
-import { Image, View, Text, StyleSheet, Pressable } from "react-native";
+import {
+  Image,
+  View,
+  Text,
+  StyleSheet,
+  Pressable,
+  ImageSourcePropType,
+  Animated,
+} from "react-native";
 import { text } from "../constants/colors";
 
-export default function Card() {
+interface CardProps {
+  dishTitle: string;
+  profileImg: ImageSourcePropType;
+  dishImg: ImageSourcePropType;
+  category: string;
+  scale?: Animated.Value | number;
+  offsetX?: Animated.Value | number;
+  zIndex: number;
+}
+
+export default function Card({
+  dishTitle,
+  profileImg,
+  dishImg,
+  category,
+  scale = 1,
+  offsetX = 0,
+  zIndex = 1,
+}: CardProps) {
+  console.log(dishTitle, zIndex);
   return (
-    <View style={styles.card}>
+    <Animated.View
+      style={[
+        styles.card,
+        {
+          transform: [{ scale }, { translateX: offsetX }],
+          zIndex: zIndex, // Ensure stacking order
+          position: "absolute",
+          left: 10,
+          top: 0,
+          marginTop: 20,
+        },
+      ]}
+    >
       <View style={styles.cardTitle}>
-        <Image
-          style={styles.profileImg}
-          source={require("../../assets/me.jpg")}
-        />
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>
-          Ayo's Mac & Cheese
-        </Text>
+        <Image style={styles.profileImg} source={profileImg} />
+        <Text style={{ fontSize: 22, fontWeight: "bold" }}>{dishTitle}</Text>
       </View>
-      <Image style={styles.img} source={require("../../assets/mac.png")} />
+      <Image style={styles.img} source={dishImg} />
       <View style={styles.tag}>
-        <Text style={{ fontWeight: "bold" }}>Main Dish</Text>
+        <Text style={{ fontWeight: "bold" }}>{category}</Text>
       </View>
-    </View>
+    </Animated.View>
   );
 }
 
@@ -30,6 +64,7 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   card: {
+    position: "relative",
     backgroundColor: "#E8E8FB",
     borderRadius: 20,
     paddingHorizontal: 7,
@@ -37,8 +72,8 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 5, height: 0 },
     shadowOpacity: 0.3,
     shadowRadius: 3,
-    position: "relative",
     height: 500,
+    width: "90%",
   },
   img: {
     height: "85%",
