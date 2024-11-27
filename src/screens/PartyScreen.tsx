@@ -1,35 +1,29 @@
 import React, { useRef, useState } from "react";
 import {
-  Image,
   View,
   Text,
   StyleSheet,
   TextInput,
-  Pressable,
   ScrollView,
   KeyboardAvoidingView,
   Platform,
   FlatList,
   Animated,
-  useAnimatedValue,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../assets/svg/search";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Card from "../components/card";
-import {
-  Directions,
-  Gesture,
-  GestureDetector,
-} from "react-native-gesture-handler";
-import { bg, text } from "../constants/colors";
+import { Gesture, GestureDetector } from "react-native-gesture-handler";
+import Modal from "../components/modal";
 
 //TODO: use flatlist for lazy loading etc
 //- could render the top card and second card on top of each other so when you swipe the top card the second card shows.
 //-
 
 export default function PartyScreen() {
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const [dishes, setDishes] = useState([
     {
       dishName: "Mac & Cheese",
@@ -109,18 +103,19 @@ export default function PartyScreen() {
 
   return (
     <SafeAreaView style={styles.container}>
-      <View>
-        <Text
-          style={{
-            color: "#fff",
-            fontSize: 25,
-            marginVertical: 20,
-          }}
-        >
-          Ayo's Friendsgiving
-        </Text>
-      </View>
       <View style={styles.mainContainer}>
+        <View>
+          <Text
+            style={{
+              color: "#fff",
+              fontSize: 25,
+              marginVertical: 20,
+              marginLeft: 20,
+            }}
+          >
+            Ayo's Friendsgiving
+          </Text>
+        </View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
           keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 0}
@@ -222,7 +217,8 @@ export default function PartyScreen() {
         </KeyboardAvoidingView>
       </View>
 
-      <NavBar />
+      <NavBar setIsModalOpen={setIsModalOpen} />
+      {/* {!isModalOpen && <Modal />} */}
     </SafeAreaView>
   );
 }

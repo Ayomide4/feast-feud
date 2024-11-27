@@ -123,7 +123,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     backgroundColor: bg,
     flex: 1,
-    marginBottom: 100,
+    marginBottom: 200,
     marginHorizontal: 10,
   },
   text: {

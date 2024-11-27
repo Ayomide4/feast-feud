@@ -3,10 +3,13 @@ import { LinearGradient } from "expo-linear-gradient";
 import Home from "../../assets/svg/home";
 import Add from "../../assets/svg/add";
 import Messages from "../../assets/svg/messages";
+import { SetStateAction, useState } from "react";
+import React from "react";
 
-//TODO:
-
-export default function NavBar() {
+interface Props {
+  setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
+}
+export default function NavBar({ setIsModalOpen }: Props) {
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -18,7 +21,7 @@ export default function NavBar() {
           <Pressable>
             <Home width={40} height={40} />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={() => setIsModalOpen(true)}>
             <Add width={50} height={50} />
           </Pressable>
           <Pressable>
