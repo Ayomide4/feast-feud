@@ -11,6 +11,7 @@ import {
   Platform,
   FlatList,
   Animated,
+  useAnimatedValue,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import Search from "../../assets/svg/search";
@@ -22,20 +23,14 @@ import {
   Gesture,
   GestureDetector,
 } from "react-native-gesture-handler";
+import { bg, text } from "../constants/colors";
 
-//FIXME: fix flatlist scrollview issue
-//FIXME: use margin on cards instead of padding on container around cards?
 //TODO: use flatlist for lazy loading etc
+//- could render the top card and second card on top of each other so when you swipe the top card the second card shows.
+//-
 
 export default function PartyScreen() {
-  const reviewRef = useRef<TextInput>(null);
-  const focusInput = () => {
-    if (reviewRef.current) {
-      reviewRef.current.focus();
-    }
-  };
-
-  const dishes = [
+  const [dishes, setDishes] = useState([
     {
       dishName: "Mac & Cheese",
       creator: "Ayo",
@@ -57,18 +52,55 @@ export default function PartyScreen() {
       dishImg: require("../../assets/pasta.jpg"),
       category: "Main Dish",
     },
-  ];
+  ]);
+  const reviewRef = useRef<TextInput>(null);
+  const focusInput = () => {
+    if (reviewRef.current) {
+      reviewRef.current.focus();
+    }
+  };
+
+  // Animated value to control the horizontal transition
+  const cardOffsetX = new Animated.Value(0);
+
+  const updateIndex = (index: number, swipeDirection: string) => {
+    setDishes((prevDishes) => {
+      const updatedDishes = [...prevDishes];
+
+      if (swipeDirection === "left") {
+        const swipedItem = updatedDishes.splice(index, 1)[0];
+        updatedDishes.push(swipedItem); // Move swiped item to the end
+      } else if (swipeDirection === "right") {
+        // Move the last item to the beginning
+        const swipedItem = updatedDishes.pop(); // Remove the last item
+        if (swipedItem) {
+          updatedDishes.unshift(swipedItem); // Add it to the beginning
+        }
+      }
+      return updatedDishes;
+    });
+  };
 
   const horizontalPan = Gesture.Pan()
-    .activeOffsetX([-10, 10]) // Only respond to significant horizontal movements
-    .failOffsetY([-5, 5]) // Allow vertical gestures to pass through
     .onUpdate((event) => {
-      if (event.translationX > 0) {
-        console.log("swipe right");
-      } else {
+      // Animate horizontal movement
+      cardOffsetX.setValue(event.translationX);
+    })
+    .onEnd((event) => {
+      // Determine swipe direction based on translationX
+      if (event.translationX < -50) {
         console.log("swipe left");
+        updateIndex(0, "left");
+      } else if (event.translationX > 50) {
+        console.log("swipe right");
+        updateIndex(0, "right");
+      } else {
+        console.log("no significant swipe detected");
       }
-    });
+    })
+    .activeOffsetX([-10, 10]) // Respond to significant horizontal movements
+    .failOffsetY([-10, 10]); // Allow vertical gestures to pass through
+
   // Scroll Gesture
   const scrollGesture = Gesture.Native();
 
@@ -110,46 +142,80 @@ export default function PartyScreen() {
                 placeholderTextColor="#000"
               />
             </View>
-            {/* <View style={{ position: "relative" }}>{renderDishes}</View> */}
-            {/**/}
-            {/* <Card */}
-            {/*   dishTitle={dishes[0].dishName} */}
-            {/*   profileImg={dishes[0].profileImg} */}
-            {/*   dishImg={dishes[0].dishImg} */}
-            {/*   category={dishes[0].category} */}
-            {/* /> */}
 
-            <FlatList
-              data={dishes}
-              contentContainerStyle={{
-                width: "100%",
-                height: 600,
-                position: "relative",
-              }}
-              style={{}}
-              keyExtractor={(item, index) => index.toString()} // Ensures unique keys
-              renderItem={(
-                { item, index }, // Correct destructuring
-              ) => {
-                const scale = new Animated.Value(1 - index * 0.05); // Reduce size progressively
-                const offsetX = new Animated.Value(index * 20);
-                const zIndex = dishes.length - index;
+            <View>
+              <FlatList
+                data={dishes}
+                scrollEnabled={false}
+                contentContainerStyle={{
+                  width: "100%",
+                  height: 600,
+                  position: "relative",
+                }}
+                keyExtractor={(item, index) => index.toString()} // Ensures unique keys
+                renderItem={(
+                  { item, index }, // Correct destructuring
+                ) => {
+                  const scale = new Animated.Value(1 - index * 0.05); // Reduce size progressively
+                  const offsetX = new Animated.Value(index * 20);
+                  const zIndex = dishes.length - index;
 
-                return (
-                  <GestureDetector gesture={combinedGesture}>
-                    <Card
-                      dishTitle={item.dishName}
-                      profileImg={item.profileImg}
-                      dishImg={item.dishImg}
-                      category={item.category}
-                      scale={scale}
-                      offsetX={offsetX}
-                      zIndex={zIndex}
-                    />
-                  </GestureDetector>
-                );
-              }}
-            />
+                  return (
+                    <GestureDetector gesture={combinedGesture}>
+                      <Card
+                        dishTitle={item.dishName}
+                        profileImg={item.profileImg}
+                        dishImg={item.dishImg}
+                        category={item.category}
+                        scale={scale}
+                        offsetX={offsetX}
+                        zIndex={zIndex}
+                      />
+                    </GestureDetector>
+                  );
+                }}
+              />
+              {/* <Card */}
+              {/*   dishTitle={dishes[1].dishName} */}
+              {/*   profileImg={dishes[1].profileImg} */}
+              {/*   dishImg={dishes[1].dishImg} */}
+              {/*   category={dishes[1].category} */}
+              {/* /> */}
+              {/* <View */}
+              {/*   style={{ */}
+              {/*     backgroundColor: "#E8E8FB", */}
+              {/*     height: 500, */}
+              {/*     width: "90%", */}
+              {/*     position: "absolute", */}
+              {/*     borderRadius: 20, */}
+              {/*     left: 20, */}
+              {/*     top: 20, */}
+              {/*     transform: [{ scaleY: 0.95 }], */}
+              {/*     zIndex: -1, */}
+              {/*     shadowColor: "#171717", */}
+              {/*     shadowOffset: { width: 5, height: 0 }, */}
+              {/*     shadowOpacity: 0.3, */}
+              {/*     shadowRadius: 3, */}
+              {/*   }} */}
+              {/* /> */}
+              {/* <View */}
+              {/*   style={{ */}
+              {/*     backgroundColor: "#E8E8FB", */}
+              {/*     height: 500, */}
+              {/*     width: "90%", */}
+              {/*     position: "absolute", */}
+              {/*     borderRadius: 20, */}
+              {/*     left: 30, */}
+              {/*     top: 20, */}
+              {/*     transform: [{ scaleY: 0.9 }], */}
+              {/*     zIndex: -2, */}
+              {/*     shadowColor: "#171717", */}
+              {/*     shadowOffset: { width: 5, height: 0 }, */}
+              {/*     shadowOpacity: 0.3, */}
+              {/*     shadowRadius: 3, */}
+              {/*   }} */}
+              {/* /> */}
+            </View>
 
             <Review ref={reviewRef} />
           </ScrollView>

@@ -16,7 +16,7 @@ interface CardProps {
   category: string;
   scale?: Animated.Value | number;
   offsetX?: Animated.Value | number;
-  zIndex: number;
+  zIndex?: number;
 }
 
 export default function Card({
@@ -69,7 +69,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: 7,
     shadowColor: "#171717",
     shadowOffset: { width: 5, height: 0 },
-    shadowOpacity: 0.3,
+    shadowOpacity: 0.1,
     shadowRadius: 3,
     height: 500,
     width: "90%",

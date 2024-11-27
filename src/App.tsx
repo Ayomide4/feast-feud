@@ -13,16 +13,16 @@ export default function App() {
     <GestureHandlerRootView>
       <NavigationContainer>
         <Stack.Navigator>
-          {/* <Stack.Screen */}
-          {/*   name="Welcome" */}
-          {/*   component={WelcomeScreen} */}
-          {/*   options={{ headerShown: false }} */}
-          {/* /> */}
-          {/* <Stack.Screen */}
-          {/*   name="Enter Code" */}
-          {/*   component={CodeScreen} */}
-          {/*   options={{ headerShown: false }} */}
-          {/* /> */}
+          <Stack.Screen
+            name="Welcome"
+            component={WelcomeScreen}
+            options={{ headerShown: false }}
+          />
+          <Stack.Screen
+            name="Enter Code"
+            component={CodeScreen}
+            options={{ headerShown: false }}
+          />
           <Stack.Screen
             name="Party"
             component={PartyScreen}
