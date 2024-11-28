@@ -218,7 +218,7 @@ export default function PartyScreen() {
       </View>
 
       <NavBar setIsModalOpen={setIsModalOpen} />
-      {/* {!isModalOpen && <Modal />} */}
+      {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
     </SafeAreaView>
   );
 }
