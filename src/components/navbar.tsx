@@ -44,12 +44,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     alignItems: "center",
+    justifyContent: "center",
   },
   iconContainer: {
     width: "90%",
-    height: "100%",
     flexDirection: "row",
     alignItems: "center",
     justifyContent: "space-evenly",
+    marginBottom: 10,
   },
 });

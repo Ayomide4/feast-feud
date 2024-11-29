@@ -5,6 +5,7 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -18,6 +19,7 @@ import { TextInput } from "react-native-gesture-handler";
 import React, { useState } from "react";
 import Google from "../../assets/svg/google";
 import Eye from "../../assets/svg/eye";
+import { signUp } from "../api";
 
 interface UserLogin {
   email: string;
@@ -39,6 +41,14 @@ export default function Register({ navigation }: any) {
     }));
   };
 
+  const handleRegister = async (userLogin: UserLogin) => {
+    if (userLogin.password !== verifiedPassword) {
+      Alert.alert("Passwords must match");
+    } else {
+      const user = await signUp(userLogin);
+      console.log(user);
+    }
+  };
   //TODO: validate user and pass
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -128,7 +138,7 @@ export default function Register({ navigation }: any) {
             </View>
 
             <Pressable
-              onPress={() => console.log(userLogin, verifiedPassword)}
+              onPress={() => handleRegister(userLogin)}
               style={{
                 width: "100%",
                 height: 40,
