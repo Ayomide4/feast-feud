@@ -1,57 +1,80 @@
-import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import React, { useRef, useEffect } from "react";
 import {
-  text,
-  accent,
-} from "../constants/colors";
+  View,
+  Text,
+  StyleSheet,
+  Animated,
+  TouchableWithoutFeedback,
+} from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import DishScroll from "../../assets/svg/DishScroll";
 import ReviewScroll from "../../assets/svg/ReviewScroll";
+import { text, accent } from "../constants/colors";
 
-export default function OnboardingSwipeInstructions() {
+interface Props {
+    fadeDuration?: number;
+    onFadeOutComplete?: () => void;
+    }
+export default function OnboardingSwipeInstructions({ fadeDuration = 300, onFadeOutComplete }: Props) {
+  const opacity = useRef(new Animated.Value(0)).current;
+  useEffect(() => {
+    Animated.timing(opacity, {
+      toValue: 1,
+      duration: fadeDuration,
+      useNativeDriver: true,
+    }).start();
+  }, [opacity]);
+
+  const handleFadeOut = () => {
+    Animated.timing(opacity, {
+      toValue: 0,
+      duration: fadeDuration,
+      useNativeDriver: true,
+    }).start(() => {
+      if (onFadeOutComplete) {
+        onFadeOutComplete();
+      }
+    });
+  };
+
   return (
-    <LinearGradient
-      colors={["transparent", accent]}
-      style={styles.overlay} // Gradient applies to the entire container
-    >
-      <View style={styles.actionContainer}>
-        <View style={styles.actionContainer}>
+    <TouchableWithoutFeedback onPress={handleFadeOut}>
+      <Animated.View style={[styles.overlay, { opacity }]}>
+        <LinearGradient colors={["transparent", accent]} style={styles.overlay}>
+          <View style={styles.actionContainer}>
+            <View style={styles.actions}>
 
-          <View style={styles.actions}>
+              <View style={styles.actionLeft}>
+                <ReviewScroll width={27} height={25} />
+                <View>
+                  <Text style={styles.actionLabel}>Leave a review?</Text>
+                  <Text style={styles.actionHint}>Swipe Up</Text>
+                </View>
+              </View>
 
-          <View style={styles.actionLeft}>
-            <ReviewScroll width={27} height={25} />
-            <View style={styles.actionLeft}>
-              <Text style={styles.actionLabel}>Leave a review?</Text>
-              <Text style={styles.actionHint}>Swipe Up</Text>
-            </View>
-            </View>
-
-            <View style={styles.separator}></View>
-
-            <View style={styles.actionRight}>
-              <DishScroll width={27} height={25} />
+              <View style={styles.separator}></View>
 
               <View style={styles.actionRight}>
-                <Text style={styles.actionLabel}>Next Item?</Text>
-                <Text style={styles.actionHint}>Swipe Right or Left</Text>
+                <DishScroll width={27} height={25} />
+                <View>
+                  <Text style={styles.actionLabel}>Next Item?</Text>
+                  <Text style={styles.actionHint}>Swipe Right or Left</Text>
+                </View>
               </View>
+              
             </View>
-
           </View>
-        </View>
-      </View>
-    </LinearGradient>
+        </LinearGradient>
+      </Animated.View>
+    </TouchableWithoutFeedback>
   );
 }
 
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    backgroundColor: "rgba(0,0,0,0.1)",
     alignItems: "center",
     justifyContent: "flex-end",
-    paddingVertical: 40,
     zIndex: 1,
   },
   actionContainer: {
@@ -67,11 +90,11 @@ const styles = StyleSheet.create({
   },
   actionLeft: {
     alignItems: "center",
-    height: '100%',
+    height: "100%",
   },
   actionRight: {
     alignItems: "center",
-    height: '100%',
+    height: "100%",
   },
   actionLabel: {
     fontSize: 16,
@@ -84,7 +107,7 @@ const styles = StyleSheet.create({
   },
   separator: {
     width: 1,
-    height: '100%',
+    height: "100%",
     backgroundColor: text,
   },
 });

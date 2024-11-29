@@ -20,6 +20,7 @@ import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructio
 
 export default function PartyScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(true);
   const [dishes, setDishes] = useState<Dish[]>([
     {
       dishName: "Mac & Cheese",
@@ -57,8 +58,8 @@ export default function PartyScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
-      <OnboardingSwipeInstructions />
-        <View>
+          {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={() => setShowOnboarding(false)}/>}
+          <View>
           <Text
             style={{
               color: "#fff",
