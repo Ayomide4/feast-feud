@@ -39,6 +39,7 @@ const styles = StyleSheet.create({
     height: 100,
     position: "absolute",
     bottom: 0,
+    zIndex: 1
   },
   background: {
     width: "100%",

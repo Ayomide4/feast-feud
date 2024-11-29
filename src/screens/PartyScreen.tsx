@@ -14,11 +14,14 @@ import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
+import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
+import { useOnboarding } from "../hooks/UseOnboarding";
 
 //TODO: use flatlist for lazy loading etc
 
 export default function PartyScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
+  const { showOnboarding, finishOnboarding } = useOnboarding();
   const [dishes, setDishes] = useState<Dish[]>([
     {
       dishName: "Mac & Cheese",
@@ -28,7 +31,7 @@ export default function PartyScreen() {
       dishId: "",
       user: undefined,
       images: [],
-      reviews: []
+      reviews: [],
     },
     {
       dishName: "Bacon Cheese Fries",
@@ -38,7 +41,7 @@ export default function PartyScreen() {
       dishId: "",
       user: undefined,
       images: [],
-      reviews: []
+      reviews: [],
     },
     {
       dishName: "Pasta",
@@ -48,19 +51,15 @@ export default function PartyScreen() {
       dishId: "",
       user: undefined,
       images: [],
-      reviews: []
-    }
+      reviews: [],
+    },
   ]);
   const reviewRef = useRef<TextInput>(null);
-  const focusInput = () => {
-    if (reviewRef.current) {
-      reviewRef.current.focus();
-    }
-  };  
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
+      {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding}/>}
         <View>
           <Text
             style={{
@@ -95,13 +94,12 @@ export default function PartyScreen() {
               />
             </View>
 
-            <DishScrollStack dishes={dishes}/>
+            <DishScrollStack dishes={dishes} />
 
             <Review ref={reviewRef} />
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
-
       <NavBar setIsModalOpen={setIsModalOpen} />
       {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
     </SafeAreaView>
