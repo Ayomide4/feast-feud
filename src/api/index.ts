@@ -2,9 +2,10 @@ import {
   createUserWithEmailAndPassword,
   signInAnonymously,
   signInWithEmailAndPassword,
+  User,
 } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
-import { addDoc, collection, Timestamp } from "firebase/firestore";
+import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
 
 export async function testAuth() {
   signInAnonymously(auth)
@@ -29,7 +30,22 @@ export async function addReview(review: Review) {
   }
 }
 
-export async function addDish(dish: Dish) {}
+export async function addDish(dish: Dish, user: User) {
+  try {
+    const dishCollection = collection(db, "dishes");
+    const userRef = doc(db, "users", user.uid);
+
+    const docRef = await addDoc(dishCollection, {
+      ...dish,
+      createdAt: Timestamp.now(),
+      user: userRef,
+    });
+
+    return docRef.id;
+  } catch (error) {
+    console.error("Error adding dish", dish);
+  }
+}
 
 export async function signIn(user: any) {
   try {
@@ -51,7 +67,18 @@ export async function signUp(user: any) {
       user.email,
       user.password,
     );
-    return userCredentials.user;
+
+    const firebaseUser = userCredentials.user;
+
+    // Create a document in Firestore with additional user info
+    await setDoc(doc(db, "users", firebaseUser.uid), {
+      email: user.email,
+      username: user.userName,
+      createdAt: new Date(),
+      profileImage: "",
+    });
+
+    return firebaseUser;
   } catch (error: any) {
     console.error("Error logging in: ", error);
   }

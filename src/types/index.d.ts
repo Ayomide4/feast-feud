@@ -10,11 +10,12 @@ interface Dish {
   // dishId: string;
   dishName: string;
   category: string;
+  dishImage: string;
+  // userId: string;
   // user: User | undefined; //partial user, has name, profile img,
   // images: string[];
   // reviews: Review[];
   // profileImg: ImageSourcePropType;
-  dishImg: ImageSourcePropType;
 }
 
 interface Review {

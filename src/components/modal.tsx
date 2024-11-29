@@ -10,6 +10,7 @@ import React, { SetStateAction, useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { addDish } from "../api";
 
 interface Props {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -86,10 +87,15 @@ export default function Modal({ setIsModalOpen }: Props) {
     }
   };
 
-  const addDish = () => {
+  const uploadDish = async () => {
     if (user) {
       if (user.isAnonymous) {
         console.log(JSON.stringify(user));
+        setDish({
+          dishName: "",
+          category: "",
+          dishImage: "",
+        });
         Alert.alert(
           "Sign In Required",
           "You need to sign in to upload your dish",
@@ -103,6 +109,8 @@ export default function Modal({ setIsModalOpen }: Props) {
       } else {
         console.log(JSON.stringify(user));
         Alert.alert(JSON.stringify(dish));
+        const response = await addDish(dish, user);
+        console.log(response);
       }
     }
   };
@@ -217,7 +225,7 @@ export default function Modal({ setIsModalOpen }: Props) {
             <View>
               <Pressable
                 style={styles.addBtn}
-                onPress={addDish}
+                onPress={uploadDish}
                 accessibilityLabel="Press this to add your dish to the items in the party"
               >
                 <Text style={{ color: text }}>Add Dish</Text>

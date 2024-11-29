@@ -23,12 +23,14 @@ import { signUp } from "../api";
 
 interface UserLogin {
   email: string;
+  userName: string;
   password: string;
 }
-
+//FIXME: add username text input
 export default function Register({ navigation }: any) {
   const [userLogin, setUserLogin] = useState<UserLogin>({
     email: "",
+    userName: "",
     password: "",
   });
   const [verifiedPassword, setVerifiedPassword] = useState("");
@@ -46,6 +48,11 @@ export default function Register({ navigation }: any) {
       Alert.alert("Passwords must match");
     } else {
       const user = await signUp(userLogin);
+      if (user) {
+        console.log(user);
+        navigation.navigate("Party");
+      }
+
       console.log(user);
     }
   };
@@ -85,6 +92,18 @@ export default function Register({ navigation }: any) {
                 inputMode="email"
                 value={userLogin.email}
                 onChangeText={(text) => handleState("email", text)}
+                spellCheck={false}
+              />
+
+              <TextInput
+                style={[styles.input, { marginBottom: 10 }]}
+                placeholder="First Name"
+                placeholderTextColor="black"
+                autoComplete="name"
+                autoCapitalize="words"
+                inputMode="text"
+                value={userLogin.userName}
+                onChangeText={(text) => handleState("userName", text)}
                 spellCheck={false}
               />
 
