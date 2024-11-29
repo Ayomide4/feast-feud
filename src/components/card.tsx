@@ -9,25 +9,19 @@ import {
 } from "react-native";
 import { text } from "../constants/colors";
 
-interface CardProps {
-  dishTitle: string;
-  profileImg: ImageSourcePropType;
-  dishImg: ImageSourcePropType;
-  category: string;
-  scale?: Animated.Value | number;
-  offsetX?: Animated.Value | number;
+interface Props {
+  dish: Dish;
+  scale?: number;
+  offsetX?: number;
   zIndex?: number;
 }
 
 export default function Card({
-  dishTitle,
-  profileImg,
-  dishImg,
-  category,
+  dish,
   scale = 1,
   offsetX = 0,
   zIndex = 1,
-}: CardProps) {
+}: Props) {
   return (
     <Animated.View
       style={[
@@ -43,12 +37,12 @@ export default function Card({
       ]}
     >
       <View style={styles.cardTitle}>
-        <Image style={styles.profileImg} source={profileImg} />
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>{dishTitle}</Text>
+        <Image style={styles.profileImg} source={dish.profileImg} />
+        <Text style={{ fontSize: 22, fontWeight: "bold" }}>{dish.dishName}</Text>
       </View>
-      <Image style={styles.img} source={dishImg} />
+      <Image style={styles.img} source={dish.dishImg} />
       <View style={styles.tag}>
-        <Text style={{ fontWeight: "bold" }}>{category}</Text>
+        <Text style={{ fontWeight: "bold" }}>{dish.category}</Text>
       </View>
     </Animated.View>
   );
