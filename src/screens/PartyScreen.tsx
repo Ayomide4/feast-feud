@@ -14,6 +14,7 @@ import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
+import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
 
 //TODO: use flatlist for lazy loading etc
 
@@ -52,15 +53,11 @@ export default function PartyScreen() {
     }
   ]);
   const reviewRef = useRef<TextInput>(null);
-  const focusInput = () => {
-    if (reviewRef.current) {
-      reviewRef.current.focus();
-    }
-  };  
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
+      <OnboardingSwipeInstructions />
         <View>
           <Text
             style={{
