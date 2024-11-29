@@ -12,15 +12,17 @@ import ReviewScroll from "../../assets/svg/ReviewScroll";
 import { text, accent } from "../constants/colors";
 
 interface Props {
-    fadeDuration?: number;
     onFadeOutComplete?: () => void;
     }
-export default function OnboardingSwipeInstructions({ fadeDuration = 300, onFadeOutComplete }: Props) {
+export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props) {
   const opacity = useRef(new Animated.Value(0)).current;
+  const fadeInDuration = 500
+  const fadeOutDuration = 300
+  
   useEffect(() => {
     Animated.timing(opacity, {
       toValue: 1,
-      duration: fadeDuration,
+      duration: fadeInDuration,
       useNativeDriver: true,
     }).start();
   }, [opacity]);
@@ -28,7 +30,7 @@ export default function OnboardingSwipeInstructions({ fadeDuration = 300, onFade
   const handleFadeOut = () => {
     Animated.timing(opacity, {
       toValue: 0,
-      duration: fadeDuration,
+      duration: fadeOutDuration,
       useNativeDriver: true,
     }).start(() => {
       if (onFadeOutComplete) {
