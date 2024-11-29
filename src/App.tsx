@@ -8,6 +8,8 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
+import { AuthProvider } from "./context/AuthContext";
+
 
 const Stack = createNativeStackNavigator();
 
@@ -29,36 +31,38 @@ export default function App() {
   }, []);
   
   return (
-    <GestureHandlerRootView>
-      <NavigationContainer>
-        <Stack.Navigator>
-          <Stack.Screen
-            name="Welcome"
-            component={WelcomeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Enter Code"
-            component={CodeScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Party"
-            component={PartyScreen}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Login"
-            component={Login}
-            options={{ headerShown: false }}
-          />
-          <Stack.Screen
-            name="Register"
-            component={Register}
-            options={{ headerShown: false }}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
-    </GestureHandlerRootView>
+    <AuthProvider>
+      <GestureHandlerRootView>
+        <NavigationContainer>
+          <Stack.Navigator>
+            <Stack.Screen
+              name="Welcome"
+              component={WelcomeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Enter Code"
+              component={CodeScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Party"
+              component={PartyScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Login"
+              component={Login}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="Register"
+              component={Register}
+              options={{ headerShown: false }}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </GestureHandlerRootView>
+    </AuthProvider>
   );
 }

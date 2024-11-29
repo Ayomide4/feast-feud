@@ -6,8 +6,11 @@ import { Dropdown } from "react-native-element-dropdown";
 import Camera from "../../assets/svg/camera";
 import Gallery from "../../assets/svg/gallery";
 import Trash from "../../assets/svg/trash";
-import React, { SetStateAction, useState } from "react";
+import React, { SetStateAction, useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
+import { useAuth } from "../context/AuthContext";
+import { useNavigation, NavigationProp } from "@react-navigation/native";
+import { addDish } from "../api";
 
 interface Props {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -19,12 +22,19 @@ interface Dish {
   dishImage: string;
 }
 
+type RootStackParamList = {
+  Login: undefined;
+};
+
 //TODO:
 //- add feedback on button press
 //- add preview of card?
 //- add dish  to firebase
 
 export default function Modal({ setIsModalOpen }: Props) {
+  const navigation = useNavigation<NavigationProp<RootStackParamList>>();
+  const { user, loading } = useAuth();
+
   const [dish, setDish] = useState<Dish>({
     dishName: "",
     category: "",
@@ -77,6 +87,33 @@ export default function Modal({ setIsModalOpen }: Props) {
     }
   };
 
+  const uploadDish = async () => {
+    if (user) {
+      if (user.isAnonymous) {
+        console.log(JSON.stringify(user));
+        setDish({
+          dishName: "",
+          category: "",
+          dishImage: "",
+        });
+        Alert.alert(
+          "Sign In Required",
+          "You need to sign in to upload your dish",
+          [
+            {
+              text: "OK",
+              onPress: () => navigation.navigate("Login"),
+            },
+          ],
+        );
+      } else {
+        console.log(JSON.stringify(user));
+        Alert.alert(JSON.stringify(dish));
+        const response = await addDish(dish, user);
+        console.log(response);
+      }
+    }
+  };
   return (
     <View
       style={{
@@ -188,7 +225,7 @@ export default function Modal({ setIsModalOpen }: Props) {
             <View>
               <Pressable
                 style={styles.addBtn}
-                onPress={() => Alert.alert(JSON.stringify(dish))}
+                onPress={uploadDish}
                 accessibilityLabel="Press this to add your dish to the items in the party"
               >
                 <Text style={{ color: text }}>Add Dish</Text>

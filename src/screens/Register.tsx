@@ -5,6 +5,7 @@ import {
   Pressable,
   TouchableWithoutFeedback,
   Keyboard,
+  Alert,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import {
@@ -18,15 +19,18 @@ import { TextInput } from "react-native-gesture-handler";
 import React, { useState } from "react";
 import Google from "../../assets/svg/google";
 import Eye from "../../assets/svg/eye";
+import { signUp } from "../api";
 
 interface UserLogin {
   email: string;
+  userName: string;
   password: string;
 }
-
+//FIXME: add username text input
 export default function Register({ navigation }: any) {
   const [userLogin, setUserLogin] = useState<UserLogin>({
     email: "",
+    userName: "",
     password: "",
   });
   const [verifiedPassword, setVerifiedPassword] = useState("");
@@ -39,6 +43,19 @@ export default function Register({ navigation }: any) {
     }));
   };
 
+  const handleRegister = async (userLogin: UserLogin) => {
+    if (userLogin.password !== verifiedPassword) {
+      Alert.alert("Passwords must match");
+    } else {
+      const user = await signUp(userLogin);
+      if (user) {
+        console.log(user);
+        navigation.navigate("Party");
+      }
+
+      console.log(user);
+    }
+  };
   //TODO: validate user and pass
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
@@ -75,6 +92,18 @@ export default function Register({ navigation }: any) {
                 inputMode="email"
                 value={userLogin.email}
                 onChangeText={(text) => handleState("email", text)}
+                spellCheck={false}
+              />
+
+              <TextInput
+                style={[styles.input, { marginBottom: 10 }]}
+                placeholder="First Name"
+                placeholderTextColor="black"
+                autoComplete="name"
+                autoCapitalize="words"
+                inputMode="text"
+                value={userLogin.userName}
+                onChangeText={(text) => handleState("userName", text)}
                 spellCheck={false}
               />
 
@@ -128,7 +157,7 @@ export default function Register({ navigation }: any) {
             </View>
 
             <Pressable
-              onPress={() => console.log(userLogin, verifiedPassword)}
+              onPress={() => handleRegister(userLogin)}
               style={{
                 width: "100%",
                 height: 40,

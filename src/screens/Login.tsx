@@ -19,6 +19,7 @@ import { TextInput } from "react-native-gesture-handler";
 import React, { useState } from "react";
 import Google from "../../assets/svg/google";
 import Eye from "../../assets/svg/eye";
+import { signIn } from "../api";
 
 interface UserLogin {
   email: string;
@@ -39,7 +40,16 @@ export default function Login({ navigation }: any) {
     }));
   };
 
+  const handleSubmit = async (userLogin: UserLogin) => {
+    const user = await signIn(userLogin);
+    if (user) {
+      console.log(user);
+      navigation.navigate("Party");
+    }
+  };
+
   //TODO: validate user and pass
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
       <SafeAreaView style={styles.mainContainer}>
@@ -138,7 +148,7 @@ export default function Login({ navigation }: any) {
             </View>
 
             <Pressable
-              onPress={() => console.log(userLogin)}
+              onPress={() => handleSubmit(userLogin)}
               style={{
                 width: "100%",
                 height: 40,
