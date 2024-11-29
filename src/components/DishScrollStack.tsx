@@ -8,10 +8,11 @@ import { PanGesture } from "react-native-gesture-handler";
 interface Props {
   dishes: Dish[];
   autoplay?: boolean;
+  autoPlayInterval?: number;
   loop?: boolean;
   onScrollStart?: () => void;
   onScrollEnd?: () => void;
-  onSnapToItem?: () => void;
+  onSnapToItem?: (index: Number) => void;
 }
 
 /**
@@ -22,6 +23,7 @@ interface Props {
  * @param {Object} props - The component props
  * @param {Dish[]} props.dishes - Array of dish objects to display in the carousel
  * @param {boolean} [props.autoplay=false] - Whether the carousel should auto-play
+ * @param {number} [props.autoplayInterval=2000] - The interval in milliseconds between auto-play transitions
  * @param {boolean} [props.loop=true] - Whether the carousel should loop back to the beginning
  * @param {Function} [props.onScrollStart] - Callback function triggered when scrolling starts
  * @param {Function} [props.onScrollEnd] - Callback function triggered when scrolling ends
@@ -30,18 +32,20 @@ interface Props {
  * @returns {JSX.Element} A carousel component displaying dish cards with a stack slide animation effect
  * 
  * @example
- * <CardScrollView
+ * <DishScrollStack
  *   dishes={dishesArray}
  *   autoplay={true}
+ *   autoPlayInterval={3000}
  *   loop={true}
  *   onScrollStart={() => console.log('Scroll started')}
  *   onScrollEnd={() => console.log('Scroll ended')}
  *   onSnapToItem={(index) => console.log('Snapped to index', index)}
  * />
  */
-export default function CardScrollView({
+export default function DishScrollStack({
   dishes,
   autoplay = false,
+  autoPlayInterval = 2000,
   loop = true,
   onScrollStart,
   onScrollEnd,
@@ -83,7 +87,7 @@ export default function CardScrollView({
   return (
     <View style={styles.container}>
       <Carousel
-        autoPlayInterval={2000}
+        autoPlayInterval={autoPlayInterval}
         autoPlay={autoplay}
         data={dishes}
         height={600}

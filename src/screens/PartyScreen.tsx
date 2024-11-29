@@ -13,7 +13,7 @@ import Search from "../../assets/svg/search";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Modal from "../components/modal";
-import CardScrollView from "../components/DishScrollView";
+import DishScrollStack from "../components/DishScrollStack";
 
 //TODO: use flatlist for lazy loading etc
 
@@ -95,7 +95,7 @@ export default function PartyScreen() {
               />
             </View>
 
-            <CardScrollView dishes={dishes}/>
+            <DishScrollStack dishes={dishes}/>
 
             <Review ref={reviewRef} />
           </ScrollView>
