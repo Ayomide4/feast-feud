@@ -4,7 +4,7 @@ interface Props {
   width?: number;
   height?: number;
 }
-const swipeHorizontal = ({ width, height }: Props) => {
+const SwipeHorizontal = ({ width, height }: Props) => {
   return (
     <Svg
       width={width || "50"}
@@ -28,4 +28,4 @@ const swipeHorizontal = ({ width, height }: Props) => {
   );
 };
 
-export default swipeHorizontal;
+export default SwipeHorizontal;

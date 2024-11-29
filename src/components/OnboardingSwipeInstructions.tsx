@@ -7,18 +7,35 @@ import {
   TouchableWithoutFeedback,
 } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
-import DishScroll from "../../assets/svg/DishScroll";
-import ReviewScroll from "../../assets/svg/ReviewScroll";
 import { text, accent } from "../constants/colors";
+import SwipeUp from "../../assets/svg/SwipeUp";
+import SwipeHorizontal from "../../assets/svg/SwipeHorizontal";
 
 interface Props {
     onFadeOutComplete?: () => void;
     }
-export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props) {
+    
+/**
+ * A component that displays swipe instructions during onboarding with fade in/out animations.
+ * 
+ * This component shows instructions for two main actions:
+ * 1. Swiping up to leave a review
+ * 2. Swiping horizontally to see next item
+ * 
+ * The component fades in automatically on mount and can be dismissed with a tap,
+ * triggering a fade out animation.
+ * 
+ * @param {Object} props - The component props
+ * @param {() => void} props.onFadeOutComplete - Optional callback function that is called
+ * when the fade out animation completes
+ * 
+ * @returns {JSX.Element} A touchable animated view containing swipe instructions
+ */
+export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props): JSX.Element {
   const opacity = useRef(new Animated.Value(0)).current;
   const fadeInDuration = 500
   const fadeOutDuration = 300
-  
+
   useEffect(() => {
     Animated.timing(opacity, {
       toValue: 1,
@@ -27,6 +44,15 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
     }).start();
   }, [opacity]);
 
+  /**
+   * Initiates a fade-out animation using React Native's Animated API.
+   * The opacity value animates from its current value to 0 over the specified duration.
+   * Once the animation completes, it calls the optional onFadeOutComplete callback if provided.
+   * 
+   * @function
+   * @uses Animated.timing for animating opacity
+   * @uses useNativeDriver for better performance
+   */
   const handleFadeOut = () => {
     Animated.timing(opacity, {
       toValue: 0,
@@ -46,9 +72,9 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
           <View style={styles.actionContainer}>
             <View style={styles.actions}>
 
-              <View style={styles.actionLeft}>
-                <ReviewScroll width={27} height={25} />
-                <View>
+              <View style={styles.actionItem}>
+                <SwipeUp width={50} height={50} />
+                <View  style={styles.actionItem}>
                   <Text style={styles.actionLabel}>Leave a review?</Text>
                   <Text style={styles.actionHint}>Swipe Up</Text>
                 </View>
@@ -56,9 +82,9 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
 
               <View style={styles.separator}></View>
 
-              <View style={styles.actionRight}>
-                <DishScroll width={27} height={25} />
-                <View>
+              <View style={styles.actionItem}>
+                <SwipeHorizontal width={50} height={50} />
+                <View style={styles.actionItem}>
                   <Text style={styles.actionLabel}>Next Item?</Text>
                   <Text style={styles.actionHint}>Swipe Right or Left</Text>
                 </View>
@@ -81,7 +107,7 @@ const styles = StyleSheet.create({
   },
   actionContainer: {
     width: "100%",
-    height: "25%",
+    height: "33%",
     paddingHorizontal: 16,
     marginBottom: 32,
   },
@@ -90,13 +116,8 @@ const styles = StyleSheet.create({
     justifyContent: "space-around",
     height: 200,
   },
-  actionLeft: {
+  actionItem: {
     alignItems: "center",
-    height: "100%",
-  },
-  actionRight: {
-    alignItems: "center",
-    height: "100%",
   },
   actionLabel: {
     fontSize: 16,
@@ -108,8 +129,7 @@ const styles = StyleSheet.create({
     color: text,
   },
   separator: {
-    width: 1,
-    height: "100%",
+    width: 2,
     backgroundColor: text,
   },
 });
