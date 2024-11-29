@@ -97,7 +97,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
       reviews: [],
     },
   ]);
-  const filteredDishes = dishes.filter((dish) =>
+  const filteredDishes: Dish[] = dishes.filter((dish) =>
     dish.dishName.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
