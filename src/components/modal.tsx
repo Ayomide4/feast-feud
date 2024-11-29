@@ -254,7 +254,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     top: 0,
-    zIndex: 2,
   },
 
   modalContainer: {
@@ -265,8 +264,6 @@ const styles = StyleSheet.create({
     opacity: 1,
     top: 100,
     borderRadius: 10,
-
-    zIndex: 3,
   },
 
   formContainer: {
