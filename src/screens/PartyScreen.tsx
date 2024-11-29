@@ -1,4 +1,4 @@
-import React, { useRef, useState } from "react";
+import React, { useRef, useState, useEffect } from "react";
 import {
   View,
   Text,
@@ -15,8 +15,12 @@ import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
 import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
 import { useOnboarding } from "../hooks/UseOnboarding";
+<<<<<<< HEAD
 import { SearchProvider, useSearch } from "../contexts/SearchProvider";
 import DishSearchBar from "../components/DishSearchBar";
+=======
+import { getDishes } from "../api";
+>>>>>>> f71573d (testing get dishes)
 
 //TODO: use flatlist for lazy loading etc
 
@@ -25,10 +29,24 @@ export default function PartyScreen() {
   const { showOnboarding, finishOnboarding } = useOnboarding();
   const reviewRef = useRef<TextInput>(null);
 
+  useEffect(() => {
+    const latestDishes = async () => {
+      const test = await getDishes();
+      console.log(test);
+      // test?.forEach((item) => console.log(item));
+    };
+    latestDishes();
+  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
+<<<<<<< HEAD
         {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding}/>}
+=======
+        {showOnboarding && (
+          <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding} />
+        )}
+>>>>>>> f71573d (testing get dishes)
         <View>
           <Text
             style={{

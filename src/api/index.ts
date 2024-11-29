@@ -5,7 +5,17 @@ import {
   User,
 } from "firebase/auth";
 import { auth, db } from "../firebaseConfig";
-import { addDoc, collection, doc, setDoc, Timestamp } from "firebase/firestore";
+import {
+  addDoc,
+  collection,
+  doc,
+  getDoc,
+  getDocs,
+  orderBy,
+  query,
+  setDoc,
+  Timestamp,
+} from "firebase/firestore";
 
 export async function testAuth() {
   signInAnonymously(auth)
@@ -81,5 +91,23 @@ export async function signUp(user: any) {
     return firebaseUser;
   } catch (error: any) {
     console.error("Error logging in: ", error);
+  }
+}
+
+export async function getDishes() {
+  try {
+    const dishesQuery = query(
+      collection(db, "dishes"),
+      orderBy("createdAt", "asc"),
+    );
+
+    const querySnapshot = await getDocs(dishesQuery);
+
+    const dishes = querySnapshot.docs.map((doc) => ({
+      ...doc.data(),
+    }));
+    return dishes;
+  } catch (error) {
+    console.error("Failed to get dishes from db", error);
   }
 }
