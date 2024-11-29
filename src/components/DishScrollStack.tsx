@@ -1,12 +1,12 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import Card from "./card";
 import Carousel from "react-native-reanimated-carousel";
 import { interpolate } from "react-native-reanimated";
 import { PanGesture } from "react-native-gesture-handler";
+import { useSearch } from "../contexts/SearchProvider";
 
 interface Props {
-  dishes: Dish[];
   autoplay?: boolean;
   autoPlayInterval?: number;
   loop?: boolean;
@@ -21,7 +21,6 @@ interface Props {
  * @component
  * 
  * @param {Object} props - The component props
- * @param {Dish[]} props.dishes - Array of dish objects to display in the carousel
  * @param {boolean} [props.autoplay=false] - Whether the carousel should auto-play
  * @param {number} [props.autoplayInterval=2000] - The interval in milliseconds between auto-play transitions
  * @param {boolean} [props.loop=true] - Whether the carousel should loop back to the beginning
@@ -33,7 +32,6 @@ interface Props {
  * 
  * @example
  * <DishScrollStack
- *   dishes={dishesArray}
  *   autoplay={true}
  *   autoPlayInterval={3000}
  *   loop={true}
@@ -43,7 +41,6 @@ interface Props {
  * />
  */
 export default function DishScrollStack({
-  dishes,
   autoplay = false,
   autoPlayInterval = 2000,
   loop = true,
@@ -52,6 +49,15 @@ export default function DishScrollStack({
   onSnapToItem
 }: Props): JSX.Element {
   const width = Dimensions.get("window").width;
+  const { filteredDishes } = useSearch();
+  const [loopStopOverride, setLoopStopOverride] = React.useState(false);
+  const [carouselKey, setCarouselKey] = React.useState('');
+
+  useEffect(() => {
+    const singleDish = filteredDishes.length <= 1;
+      setLoopStopOverride(singleDish);
+      setCarouselKey( singleDish ? filteredDishes.toString() : '');
+  }, [filteredDishes]);
 
   /**
    * Generates animation styles for a stack slide effect.
@@ -87,12 +93,12 @@ export default function DishScrollStack({
   return (
     <View style={styles.container}>
       <Carousel
+        key={carouselKey}
         autoPlayInterval={autoPlayInterval}
         autoPlay={autoplay}
-        data={dishes}
+        data={filteredDishes}
         height={600}
-        loop={loop}
-        snapEnabled={false}
+        loop={loopStopOverride ? !loopStopOverride : loop}
         width={width}
         mode={"horizontal-stack"}
         modeConfig={{
