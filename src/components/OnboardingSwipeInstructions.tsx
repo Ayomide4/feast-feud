@@ -9,7 +9,6 @@ import {
 import { LinearGradient } from "expo-linear-gradient";
 import { text, accent } from "../constants/colors";
 import SwipeUp from "../../assets/svg/SwipeUp";
-import SwipeHorizontal from "../../assets/svg/SwipeHorizontal";
 
 interface Props {
     onFadeOutComplete?: () => void;
