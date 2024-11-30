@@ -7,7 +7,8 @@ import {
   ImageSourcePropType,
   Animated,
 } from "react-native";
-import { text } from "../constants/colors";
+import { bg, secondary, text } from "../constants/colors";
+import Profile from "../../assets/svg/profile";
 
 interface Props {
   dish: Dish;
@@ -37,7 +38,26 @@ export default function Card({
       ]}
     >
       <View style={styles.cardTitle}>
-        <Image style={styles.profileImg} source={dish.profileImg} />
+        {dish.profileImg ? (
+          <Image
+            style={styles.profileImg}
+            source={{ uri: dish.user?.profileImg }}
+          />
+        ) : (
+          <View
+            style={{
+              borderRadius: 100,
+              width: 40,
+              height: 40,
+              backgroundColor: bg,
+              marginHorizontal: 10,
+              alignItems: "center",
+              justifyContent: "center",
+            }}
+          >
+            <Profile fill="#ECE6F3" width={20} height={20} />
+          </View>
+        )}
         <Text style={{ fontSize: 22, fontWeight: "bold" }}>
           {dish.dishName}
         </Text>
