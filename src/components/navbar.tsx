@@ -1,4 +1,4 @@
-import { View, StyleSheet, Pressable } from "react-native";
+import { View, StyleSheet, Pressable, Alert } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import Home from "../../assets/svg/home";
 import Add from "../../assets/svg/add";
@@ -10,6 +10,9 @@ interface Props {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
 }
 export default function NavBar({ setIsModalOpen }: Props) {
+  const handleFeature = () => {
+    Alert.alert("Feature not implemented yet :(");
+  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -18,13 +21,13 @@ export default function NavBar({ setIsModalOpen }: Props) {
         end={{ x: 0.05, y: 1 }}
       >
         <View style={styles.iconContainer}>
-          <Pressable>
+          <Pressable onPress={handleFeature}>
             <Home width={40} height={40} />
           </Pressable>
           <Pressable onPress={() => setIsModalOpen(true)}>
             <Add width={50} height={50} />
           </Pressable>
-          <Pressable>
+          <Pressable onPress={handleFeature}>
             <Messages width={45} height={50} />
           </Pressable>
         </View>
@@ -39,7 +42,7 @@ const styles = StyleSheet.create({
     height: 100,
     position: "absolute",
     bottom: 0,
-    zIndex: 1
+    zIndex: 1,
   },
   background: {
     width: "100%",

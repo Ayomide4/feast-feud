@@ -72,7 +72,7 @@ export default function PartyScreen() {
               color: "#fff",
               fontSize: 25,
               marginVertical: 20,
-              marginLeft: 20,
+              marginLeft: 25,
             }}
           >
             Ayo's Friendsgiving

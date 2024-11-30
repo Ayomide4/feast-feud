@@ -11,7 +11,7 @@ import { testAuth } from "../api";
 
 export default function WelcomeScreen({ navigation }: any) {
   const handlePress = async () => {
-    navigation.navigate("Enter Code");
+    navigation.navigate("Party");
     await testAuth();
   };
   return (

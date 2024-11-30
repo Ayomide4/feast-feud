@@ -11,6 +11,7 @@ import * as ImagePicker from "expo-image-picker";
 import { useAuth } from "../context/AuthContext";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { addDish } from "../api";
+import Toast from "react-native-toast-message";
 
 interface Props {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -32,6 +33,13 @@ type RootStackParamList = {
 //- add dish  to firebase
 
 export default function Modal({ setIsModalOpen }: Props) {
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "Your dish has been added",
+    });
+  };
+
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { user, loading } = useAuth();
 
@@ -114,6 +122,7 @@ export default function Modal({ setIsModalOpen }: Props) {
         console.log(JSON.stringify(user));
         const response = await addDish(dish, user);
         console.log(response);
+        showToast();
         setIsModalOpen(false);
       }
     }
@@ -258,6 +267,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "center",
     top: 0,
+    zIndex: 1,
   },
 
   modalContainer: {
@@ -268,6 +278,8 @@ const styles = StyleSheet.create({
     opacity: 1,
     top: 100,
     borderRadius: 10,
+
+    zIndex: 1,
   },
 
   formContainer: {

@@ -9,7 +9,8 @@ import Register from "./screens/Register";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthProvider } from "./context/AuthContext";
-
+import Toast from "react-native-toast-message";
+import { toastConfig } from "./utils/toastConfig";
 
 const Stack = createNativeStackNavigator();
 
@@ -21,7 +22,7 @@ export default function App() {
   /**
    * Initializes the app settings by checking if it is the first launch of the app.
    * If it is the first launch, it sets the "isFirstLaunch" flag in AsyncStorage.
-   * 
+   *
    * @async
    * @function initializeAppSettings
    * @returns {Promise<void>} A promise that resolves when the initialization is complete.
@@ -38,7 +39,7 @@ export default function App() {
       console.error("Failed to initialize app settings:", error);
     }
   };
-  
+
   return (
     <AuthProvider>
       <GestureHandlerRootView>
@@ -72,6 +73,7 @@ export default function App() {
           </Stack.Navigator>
         </NavigationContainer>
       </GestureHandlerRootView>
+      <Toast config={toastConfig} />
     </AuthProvider>
   );
 }
