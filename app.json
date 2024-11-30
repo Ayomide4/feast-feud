@@ -1,7 +1,7 @@
 {
   "expo": {
     "name": "get-together",
-    "slug": "get-together",
+    "slug": "dish-duel",
     "version": "1.0.0",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
@@ -23,6 +23,12 @@
     },
     "web": {
       "favicon": "./assets/favicon.png"
-    }
+    },
+    "extra": {
+      "eas": {
+        "projectId": "f7cecde2-4835-4d60-a94d-132235691154"
+      }
+    },
+    "owner": "ayo44"
   }
 }
