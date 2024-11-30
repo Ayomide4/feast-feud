@@ -5,15 +5,12 @@ import {
   StyleSheet,
   Pressable,
   TextInput,
-  Modal,
   Alert,
-  Animated,
-  PanResponder,
 } from "react-native";
 import StarEmpty from "../../assets/svg/star-empty";
 import { bg, text } from "../constants/colors";
 import UpArrow from "../../assets/svg/up-arrow";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import StarFilled from "../../assets/svg/star-filled";
 import { addReview } from "../api/index";
 import Toast from "react-native-toast-message";
@@ -59,6 +56,7 @@ const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
         {
           starRating: target + 1, // Ensure 1-based star rating
           message: message.trim(), // Trim unnecessary spaces
+          dish: props.currentDish,
         },
         props.currentDish,
       );

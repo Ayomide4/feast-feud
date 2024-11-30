@@ -11,6 +11,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { AuthProvider } from "./context/AuthContext";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./utils/toastConfig";
+import { SearchProvider } from "./contexts/SearchProvider";
 
 const Stack = createNativeStackNavigator();
 
@@ -42,38 +43,40 @@ export default function App() {
 
   return (
     <AuthProvider>
-      <GestureHandlerRootView>
-        <NavigationContainer>
-          <Stack.Navigator>
-            <Stack.Screen
-              name="Welcome"
-              component={WelcomeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Enter Code"
-              component={CodeScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Party"
-              component={PartyScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Login"
-              component={Login}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="Register"
-              component={Register}
-              options={{ headerShown: false }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </GestureHandlerRootView>
-      <Toast config={toastConfig} />
+      <SearchProvider>
+        <GestureHandlerRootView>
+          <NavigationContainer>
+            <Stack.Navigator>
+              <Stack.Screen
+                name="Welcome"
+                component={WelcomeScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Enter Code"
+                component={CodeScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Party"
+                component={PartyScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Login"
+                component={Login}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="Register"
+                component={Register}
+                options={{ headerShown: false }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </GestureHandlerRootView>
+        <Toast config={toastConfig} />
+      </SearchProvider>
     </AuthProvider>
   );
 }
