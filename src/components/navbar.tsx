@@ -5,6 +5,7 @@ import Add from "../../assets/svg/add";
 import Messages from "../../assets/svg/messages";
 import { SetStateAction, useState } from "react";
 import React from "react";
+import { getBestRatedDishes } from "../api";
 
 interface Props {
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
@@ -12,6 +13,11 @@ interface Props {
 export default function NavBar({ setIsModalOpen }: Props) {
   const handleFeature = () => {
     Alert.alert("Feature not implemented yet :(");
+  };
+
+  const test = async () => {
+    const rating = await getBestRatedDishes();
+    console.log(rating);
   };
   return (
     <View style={styles.container}>

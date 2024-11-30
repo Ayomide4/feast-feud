@@ -16,6 +16,7 @@ import UpArrow from "../../assets/svg/up-arrow";
 import { useRef, useState } from "react";
 import StarFilled from "../../assets/svg/star-filled";
 import { addReview } from "../api/index";
+import Toast from "react-native-toast-message";
 
 const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
   const [target, setTarget] = useState<number | null>(null);
@@ -35,6 +36,13 @@ const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
       </Pressable>
     );
   });
+
+  const showToast = () => {
+    Toast.show({
+      type: "success",
+      text1: "Your review has been sent",
+    });
+  };
 
   const sendReview = async () => {
     try {
@@ -60,6 +68,7 @@ const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
       }
 
       console.log("SENT");
+      showToast();
       // Reset the input field after success
       setMessage("");
       setTarget(null);
