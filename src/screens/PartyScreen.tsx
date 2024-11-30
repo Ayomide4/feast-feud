@@ -15,12 +15,9 @@ import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
 import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
 import { useOnboarding } from "../hooks/UseOnboarding";
-<<<<<<< HEAD
 import { SearchProvider, useSearch } from "../contexts/SearchProvider";
 import DishSearchBar from "../components/DishSearchBar";
-=======
 import { getDishes } from "../api";
->>>>>>> f71573d (testing get dishes)
 
 //TODO: use flatlist for lazy loading etc
 
@@ -40,13 +37,9 @@ export default function PartyScreen() {
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
-<<<<<<< HEAD
-        {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding}/>}
-=======
         {showOnboarding && (
           <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding} />
         )}
->>>>>>> f71573d (testing get dishes)
         <View>
           <Text
             style={{
@@ -69,9 +62,9 @@ export default function PartyScreen() {
           >
             <SearchProvider>
               <DishSearchBar />
-              <DishScrollStack/>
+              <DishScrollStack />
             </SearchProvider>
-            
+
             <Review ref={reviewRef} />
           </ScrollView>
         </KeyboardAvoidingView>
@@ -93,5 +86,5 @@ const styles = StyleSheet.create({
   mainContainer: {
     position: "relative",
     flex: 1,
-  }
+  },
 });
