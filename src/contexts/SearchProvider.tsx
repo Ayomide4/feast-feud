@@ -1,4 +1,4 @@
-import React, { createContext, useState, useContext } from "react";
+import React, { createContext, useState, useContext } from 'react';
 
 interface SearchContextType {
   searchQuery: string;
@@ -33,65 +33,65 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
  * );
  * ```
  */
-export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
-  const [searchQuery, setSearchQuery] = useState<string>("");
+export const SearchProvider = ({ children }: { children: React.ReactNode }): JSX.Element => {
+  const [searchQuery, setSearchQuery] = useState<string>('');
   const [dishes, setDishes] = useState<Dish[]>([
     {
-      dishName: "Mac & Cheese",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/mac.png"),
-      category: "Main Dish",
-      dishId: "",
+      dishName: 'Mac & Cheese',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/mac.png'),
+      category: 'Main Dish',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
     },
     {
-      dishName: "Mac & Cheese 2",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/bacon.jpg"),
-      category: "Main Dish",
-      dishId: "",
+      dishName: 'Mac & Cheese 2',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/bacon.jpg'),
+      category: 'Main Dish',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
     },
     {
-      dishName: "Bacon Cheese Fries",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/bacon.jpg"),
-      category: "Appetizer",
-      dishId: "",
+      dishName: 'Bacon Cheese Fries',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/bacon.jpg'),
+      category: 'Appetizer',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
     },
     {
-      dishName: "Pasta",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/pasta.jpg"),
-      category: "Main Dish",
-      dishId: "",
+      dishName: 'Pasta',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/pasta.jpg'),
+      category: 'Main Dish',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
     },
     {
-      dishName: "Pasta2",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/pasta.jpg"),
-      category: "Main Dish",
-      dishId: "",
+      dishName: 'Pasta2',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/pasta.jpg'),
+      category: 'Main Dish',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
     },
     {
-      dishName: "Pasta3",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/pasta.jpg"),
-      category: "Main Dish",
-      dishId: "",
+      dishName: 'Pasta3',
+      profileImg: require('../../assets/me.jpg'),
+      dishImg: require('../../assets/pasta.jpg'),
+      category: 'Main Dish',
+      dishId: '',
       user: undefined,
       images: [],
       reviews: [],
@@ -128,7 +128,7 @@ export const SearchProvider = ({ children }: { children: React.ReactNode }) => {
 export const useSearch = () => {
   const context = useContext(SearchContext);
   if (!context) {
-    throw new Error("useSearch must be used within a SearchProvider");
+    throw new Error('useSearch must be used within a SearchProvider');
   }
   return context;
 };

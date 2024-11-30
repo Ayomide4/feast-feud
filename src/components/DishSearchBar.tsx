@@ -1,8 +1,8 @@
-import React, { useRef } from "react";
-import { TextInput, StyleSheet } from "react-native";
-import Search from "../../assets/svg/search";
-import { useSearch } from "../contexts/SearchProvider";
-import { TouchableWithoutFeedback } from "react-native-gesture-handler";
+import React, { useRef } from 'react';
+import { TextInput, StyleSheet } from 'react-native';
+import Search from '../../assets/svg/search';
+import { useSearch } from '../contexts/SearchProvider';
+import { TouchableWithoutFeedback } from 'react-native-gesture-handler';
 
 /**
  * DishSearchBar component provides a search input field for users to search for dishes.
@@ -35,14 +35,14 @@ export default function DishSearchBar(): JSX.Element {
       ref={searchRef}
         style={{
           marginLeft: 10,
-          backgroundColor: "#E8E8FB",
-          width: "90%",
+          backgroundColor: '#E8E8FB',
+          width: '90%',
           height: 30,
         }}
         value={searchQuery}
         onChangeText={setSearchQuery}
-        placeholder="Search here..."
-        placeholderTextColor="#000"
+        placeholder='Search here...'
+        placeholderTextColor='#000'
         autoComplete='off'
       />
       </TouchableWithoutFeedback>
@@ -58,9 +58,9 @@ const styles = StyleSheet.create({
     paddingRight: 20,
     marginLeft: 22,
     marginRight: 22,
-    backgroundColor: "#E8E8FB",
+    backgroundColor: '#E8E8FB',
     height: 40,
-    flexDirection: "row",
-    alignItems: "center",
+    flexDirection: 'row',
+    alignItems: 'center',
   },
 });
