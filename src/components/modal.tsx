@@ -108,9 +108,9 @@ export default function Modal({ setIsModalOpen }: Props) {
         );
       } else {
         console.log(JSON.stringify(user));
-        Alert.alert(JSON.stringify(dish));
         const response = await addDish(dish, user);
         console.log(response);
+        setIsModalOpen(false);
       }
     }
   };

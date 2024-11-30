@@ -19,21 +19,11 @@ import { SearchProvider, useSearch } from "../contexts/SearchProvider";
 import DishSearchBar from "../components/DishSearchBar";
 import { getDishes } from "../api";
 
-//TODO: use flatlist for lazy loading etc
-
 export default function PartyScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { showOnboarding, finishOnboarding } = useOnboarding();
   const reviewRef = useRef<TextInput>(null);
 
-  useEffect(() => {
-    const latestDishes = async () => {
-      const test = await getDishes();
-      console.log(test);
-      // test?.forEach((item) => console.log(item));
-    };
-    latestDishes();
-  }, []);
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>

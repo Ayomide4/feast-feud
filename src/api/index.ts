@@ -104,7 +104,7 @@ export async function getDishes() {
     const querySnapshot = await getDocs(dishesQuery);
 
     const dishes = querySnapshot.docs.map((doc) => ({
-      ...doc.data(),
+      ...(doc.data() as Dish),
     }));
     return dishes;
   } catch (error) {

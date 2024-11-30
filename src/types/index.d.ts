@@ -11,10 +11,9 @@ interface Dish {
   dishName: string;
   category: string;
   user: User | undefined; //partial user, has name, profile img,
-  images: string[];
   reviews: Review[];
   profileImg: ImageSourcePropType;
-  dishImg: ImageSourcePropType;
+  dishImage: ImageSourcePropType;
 }
 
 interface Review {

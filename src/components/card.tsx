@@ -38,9 +38,15 @@ export default function Card({
     >
       <View style={styles.cardTitle}>
         <Image style={styles.profileImg} source={dish.profileImg} />
-        <Text style={{ fontSize: 22, fontWeight: "bold" }}>{dish.dishName}</Text>
+        <Text style={{ fontSize: 22, fontWeight: "bold" }}>
+          {dish.dishName}
+        </Text>
       </View>
-      <Image style={styles.img} source={dish.dishImg} />
+      <Image
+        style={styles.img}
+        source={{ uri: dish.dishImage }}
+        resizeMode="cover"
+      />
       <View style={styles.tag}>
         <Text style={{ fontWeight: "bold" }}>{dish.category}</Text>
       </View>
