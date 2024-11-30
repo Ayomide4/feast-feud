@@ -20,13 +20,9 @@ import { addReview } from "../api/index";
 const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
   const [target, setTarget] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
-  if (props.currentDish) {
-    console.log("from review", props.currentDish);
-  }
 
   const handleStarPress = (index: number) => {
     setTarget(index);
-    console.log(index + 1);
   };
   const renderStars = Array.from({ length: 5 }).map((_, index: number) => {
     return (
@@ -63,6 +59,7 @@ const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
         ref.current.blur();
       }
 
+      console.log("SENT");
       // Reset the input field after success
       setMessage("");
       setTarget(null);

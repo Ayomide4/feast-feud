@@ -47,6 +47,8 @@ export default function PartyScreen() {
 
         setDishes(updatedDishes); // Update the state with the latest dishes
         setIsLoading(false);
+        console.log("start", updatedDishes[0]);
+        setCurrentDish(updatedDishes[0]);
       },
       (error) => {
         console.error("Error fetching real-time updates:", error);
@@ -89,7 +91,7 @@ export default function PartyScreen() {
               <DishScrollStack setCurrentDish={setCurrentDish} />
             </SearchProvider>
 
-            <Review ref={reviewRef} currentDish={currentDish} />
+            <Review ref={reviewRef} currentDish={currentDish} dishes={dishes} />
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
