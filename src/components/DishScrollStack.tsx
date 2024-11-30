@@ -1,18 +1,23 @@
-import React from "react";
-import { Dimensions, View, StyleSheet } from "react-native";
-import Card from "./card";
-import Carousel from "react-native-reanimated-carousel";
-import { interpolate } from "react-native-reanimated";
-import { PanGesture } from "react-native-gesture-handler";
+import React, { Key, useEffect, useState } from 'react';
+import { Dimensions, View, StyleSheet } from 'react-native';
+import Card from './card';
+import Carousel from 'react-native-reanimated-carousel';
+import { interpolate } from 'react-native-reanimated';
+import { PanGesture } from 'react-native-gesture-handler';
+import { useSearch } from '../contexts/SearchProvider';
 
 interface Props {
-  dishes: Dish[];
   autoplay?: boolean;
   autoPlayInterval?: number;
   loop?: boolean;
   onScrollStart?: () => void;
   onScrollEnd?: () => void;
   onSnapToItem?: (index: Number) => void;
+}
+interface StackSlideAnimation {
+  transform: [{ translateX: number }, { scale: number }];
+  zIndex: number;
+  opacity: number;
 }
 
 /**
@@ -21,7 +26,6 @@ interface Props {
  * @component
  * 
  * @param {Object} props - The component props
- * @param {Dish[]} props.dishes - Array of dish objects to display in the carousel
  * @param {boolean} [props.autoplay=false] - Whether the carousel should auto-play
  * @param {number} [props.autoplayInterval=2000] - The interval in milliseconds between auto-play transitions
  * @param {boolean} [props.loop=true] - Whether the carousel should loop back to the beginning
@@ -33,7 +37,6 @@ interface Props {
  * 
  * @example
  * <DishScrollStack
- *   dishes={dishesArray}
  *   autoplay={true}
  *   autoPlayInterval={3000}
  *   loop={true}
@@ -43,7 +46,6 @@ interface Props {
  * />
  */
 export default function DishScrollStack({
-  dishes,
   autoplay = false,
   autoPlayInterval = 2000,
   loop = true,
@@ -51,7 +53,16 @@ export default function DishScrollStack({
   onScrollEnd,
   onSnapToItem
 }: Props): JSX.Element {
-  const width = Dimensions.get("window").width;
+  const width: number = Dimensions.get('window').width;
+  const { filteredDishes } = useSearch();
+  const [loopStopOverride, setLoopStopOverride] = useState<boolean>(false);
+  const [carouselKey, setCarouselKey] = useState<Key>('');
+
+  useEffect(() => {
+    const singleDish: boolean = filteredDishes.length <= 1;
+      setLoopStopOverride(singleDish);
+      setCarouselKey( singleDish ? filteredDishes.toString() : '');
+  }, [filteredDishes]);
 
   /**
    * Generates animation styles for a stack slide effect.
@@ -66,16 +77,16 @@ export default function DishScrollStack({
    * - opacity: [0, 1, 0.1] for values [-1, 0, 8]
    * - zIndex: [10, 20, 30] for values [-1, 0, -1]
    */
-  const stackSlideAnimation = (value: number) => {
-    "worklet";
-    const translateX = interpolate(
+  const stackSlideAnimation = (value: number): StackSlideAnimation => {
+    'worklet';
+    const translateX: number = interpolate(
       value,
       [-1, 0, 5],
       [-width * 0.3, 10, width * 0.3]
     );
-    const scale = interpolate(value, [-1, 0, 1], [1, 1, 0.95]);
-    const opacity = interpolate(value, [-1, 0, 8], [0, 1, 0.1]);
-    const zIndex = Math.round(interpolate(value, [-1, 0, -1], [10, 20, 30]));
+    const scale: number = interpolate(value, [-1, 0, 1], [1, 1, 0.95]);
+    const opacity: number = interpolate(value, [-1, 0, 8], [0, 1, 0.1]);
+    const zIndex: number = Math.round(interpolate(value, [-1, 0, -1], [10, 20, 30]));
 
     return {
       transform: [{ translateX }, { scale }],
@@ -87,16 +98,16 @@ export default function DishScrollStack({
   return (
     <View style={styles.container}>
       <Carousel
+        key={carouselKey}
         autoPlayInterval={autoPlayInterval}
         autoPlay={autoplay}
-        data={dishes}
+        data={filteredDishes}
         height={600}
-        loop={loop}
-        snapEnabled={false}
+        loop={loopStopOverride ? !loopStopOverride : loop}
         width={width}
-        mode={"horizontal-stack"}
+        mode={'horizontal-stack'}
         modeConfig={{
-          snapDirection: "left",
+          snapDirection: 'left',
         }}
         onConfigurePanGesture={(panGesture: PanGesture) => {
           panGesture.activeOffsetX([-20, 20]);
@@ -114,7 +125,7 @@ export default function DishScrollStack({
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+    justifyContent: 'center',
+    alignItems: 'center',
   },
 });

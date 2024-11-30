@@ -1,7 +1,11 @@
-import { useState, useEffect } from "react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useState, useEffect } from 'react';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
-const IS_FIRST_LAUNCH_KEY = "isFirstLaunch";
+const IS_FIRST_LAUNCH_KEY: string = 'isFirstLaunch';
+interface OnboardingHook {
+  showOnboarding: boolean;
+  finishOnboarding: () => Promise<void>;
+  }
 
 /**
  * A custom hook that manages the onboarding state and persistence.
@@ -20,14 +24,8 @@ const IS_FIRST_LAUNCH_KEY = "isFirstLaunch";
  * }
  * ```
  */
-
-interface OnboardingHook {
-    showOnboarding: boolean;
-    finishOnboarding: () => Promise<void>;
-    }
-
 export function useOnboarding(): OnboardingHook {
-  const [showOnboarding, setShowOnboarding] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState<boolean>(false);
 
   useEffect(() => {
     fetchOnboardingStatus();
@@ -40,12 +38,12 @@ export function useOnboarding(): OnboardingHook {
  * @async
  * @throws {Error} Logs error to console if AsyncStorage access fails
  */
-  const fetchOnboardingStatus = async () => {
+  const fetchOnboardingStatus = async (): Promise<void> => {
     try {
       const isFirstLaunch = await AsyncStorage.getItem(IS_FIRST_LAUNCH_KEY);
-      setShowOnboarding(isFirstLaunch === "true");
+      setShowOnboarding(isFirstLaunch === 'true');
     } catch (error) {
-      console.error("Error fetching onboarding status:", error);
+      console.error('Error fetching onboarding status:', error);
     }
   };
 
@@ -58,10 +56,10 @@ export function useOnboarding(): OnboardingHook {
  */
   const finishOnboarding = async (): Promise<void> => {
     try {
-      await AsyncStorage.setItem(IS_FIRST_LAUNCH_KEY, "false");
+      await AsyncStorage.setItem(IS_FIRST_LAUNCH_KEY, 'false');
       setShowOnboarding(false);
     } catch (error) {
-      console.error("Error setting onboarding status:", error);
+      console.error('Error setting onboarding status:', error);
     }
   };
 

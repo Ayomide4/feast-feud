@@ -9,57 +9,26 @@ import {
   Platform,
 } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
-import Search from "../../assets/svg/search";
 import NavBar from "../components/navbar";
 import Review from "../components/review";
 import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
 import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
 import { useOnboarding } from "../hooks/UseOnboarding";
+import { SearchProvider, useSearch } from "../contexts/SearchProvider";
+import DishSearchBar from "../components/DishSearchBar";
 
 //TODO: use flatlist for lazy loading etc
 
 export default function PartyScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { showOnboarding, finishOnboarding } = useOnboarding();
-  const [dishes, setDishes] = useState<Dish[]>([
-    {
-      dishName: "Mac & Cheese",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/mac.png"),
-      category: "Main Dish",
-      dishId: "",
-      user: undefined,
-      images: [],
-      reviews: [],
-    },
-    {
-      dishName: "Bacon Cheese Fries",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/bacon.jpg"),
-      category: "Appetizer",
-      dishId: "",
-      user: undefined,
-      images: [],
-      reviews: [],
-    },
-    {
-      dishName: "Pasta",
-      profileImg: require("../../assets/me.jpg"),
-      dishImg: require("../../assets/pasta.jpg"),
-      category: "Main Dish",
-      dishId: "",
-      user: undefined,
-      images: [],
-      reviews: [],
-    },
-  ]);
   const reviewRef = useRef<TextInput>(null);
 
   return (
     <SafeAreaView style={styles.container}>
       <View style={styles.mainContainer}>
-      {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding}/>}
+        {showOnboarding && <OnboardingSwipeInstructions onFadeOutComplete={finishOnboarding}/>}
         <View>
           <Text
             style={{
@@ -74,28 +43,17 @@ export default function PartyScreen() {
         </View>
         <KeyboardAvoidingView
           behavior={Platform.OS === "ios" ? "padding" : "height"}
-          keyboardVerticalOffset={Platform.OS === "ios" ? 120 : 0}
+          keyboardVerticalOffset={Platform.OS === "ios" ? 65 : 0}
         >
           <ScrollView
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
-            <View style={styles.input}>
-              <Search width={20} height={20} />
-              <TextInput
-                style={{
-                  marginLeft: 10,
-                  backgroundColor: "#E8E8FB",
-                  width: "90%",
-                  height: 30,
-                }}
-                placeholder="Search here..."
-                placeholderTextColor="#000"
-              />
-            </View>
-
-            <DishScrollStack dishes={dishes} />
-
+            <SearchProvider>
+              <DishSearchBar />
+              <DishScrollStack/>
+            </SearchProvider>
+            
             <Review ref={reviewRef} />
           </ScrollView>
         </KeyboardAvoidingView>
@@ -117,17 +75,5 @@ const styles = StyleSheet.create({
   mainContainer: {
     position: "relative",
     flex: 1,
-  },
-
-  input: {
-    borderWidth: 1,
-    borderRadius: 15,
-    paddingLeft: 20,
-    paddingRight: 20,
-    marginHorizontal: 10,
-    backgroundColor: "#E8E8FB",
-    height: 40,
-    flexDirection: "row",
-    alignItems: "center",
-  },
+  }
 });

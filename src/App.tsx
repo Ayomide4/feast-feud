@@ -15,20 +15,29 @@ const Stack = createNativeStackNavigator();
 
 export default function App() {
   useEffect(() => {
-    const initializeAppSettings = async () => {
-      // await AsyncStorage.clear(); // Uncomment to app storage
-      try {
-        const isFirstLaunch = await AsyncStorage.getItem("isFirstLaunch");
-        if (isFirstLaunch === null) {
-          await AsyncStorage.setItem("isFirstLaunch", "true");
-        }
-      } catch (error) {
-        console.error("Failed to initialize app settings:", error);
-      }
-    };
-
     initializeAppSettings();
   }, []);
+
+  /**
+   * Initializes the app settings by checking if it is the first launch of the app.
+   * If it is the first launch, it sets the "isFirstLaunch" flag in AsyncStorage.
+   * 
+   * @async
+   * @function initializeAppSettings
+   * @returns {Promise<void>} A promise that resolves when the initialization is complete.
+   * @throws Will log an error message to the console if there is a failure during initialization.
+   */
+  const initializeAppSettings = async (): Promise<void> => {
+    // await AsyncStorage.clear(); // Uncomment to app storage
+    try {
+      const isFirstLaunch = await AsyncStorage.getItem("isFirstLaunch");
+      if (isFirstLaunch === null) {
+        await AsyncStorage.setItem("isFirstLaunch", "true");
+      }
+    } catch (error) {
+      console.error("Failed to initialize app settings:", error);
+    }
+  };
   
   return (
     <AuthProvider>

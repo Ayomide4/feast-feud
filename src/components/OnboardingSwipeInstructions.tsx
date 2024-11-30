@@ -1,15 +1,15 @@
-import React, { useRef, useEffect } from "react";
+import React, { useRef, useEffect } from 'react';
 import {
   View,
   Text,
   StyleSheet,
   Animated,
   TouchableWithoutFeedback,
-} from "react-native";
-import { LinearGradient } from "expo-linear-gradient";
-import { text, accent } from "../constants/colors";
-import SwipeUp from "../../assets/svg/SwipeUp";
-import SwipeHorizontal from "../../assets/svg/SwipeHorizontal";
+} from 'react-native';
+import { LinearGradient } from 'expo-linear-gradient';
+import { text, accent } from '../constants/colors';
+import SwipeUp from '../../assets/svg/SwipeUp';
+import SwipeHorizontal from '../../assets/svg/SwipeHorizontal';
 
 interface Props {
     onFadeOutComplete?: () => void;
@@ -53,7 +53,7 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
    * @uses Animated.timing for animating opacity
    * @uses useNativeDriver for better performance
    */
-  const handleFadeOut = () => {
+  const handleFadeOut = (): void => {
     Animated.timing(opacity, {
       toValue: 0,
       duration: fadeOutDuration,
@@ -68,7 +68,7 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
   return (
     <TouchableWithoutFeedback onPress={handleFadeOut}>
       <Animated.View style={[styles.overlay, { opacity }]}>
-        <LinearGradient colors={["transparent", accent]} style={styles.overlay}>
+        <LinearGradient colors={['transparent', accent]} style={styles.overlay}>
           <View style={styles.actionContainer}>
             <View style={styles.actions}>
 
@@ -101,27 +101,27 @@ export default function OnboardingSwipeInstructions({ onFadeOutComplete }: Props
 const styles = StyleSheet.create({
   overlay: {
     ...StyleSheet.absoluteFillObject,
-    alignItems: "center",
-    justifyContent: "flex-end",
+    alignItems: 'center',
+    justifyContent: 'flex-end',
     zIndex: 1,
   },
   actionContainer: {
-    width: "100%",
-    height: "33%",
+    width: '100%',
+    height: '33%',
     paddingHorizontal: 16,
     marginBottom: 32,
   },
   actions: {
-    flexDirection: "row",
-    justifyContent: "space-around",
+    flexDirection: 'row',
+    justifyContent: 'space-around',
     height: 200,
   },
   actionItem: {
-    alignItems: "center",
+    alignItems: 'center',
   },
   actionLabel: {
     fontSize: 16,
-    fontWeight: "bold",
+    fontWeight: 'bold',
     color: text,
   },
   actionHint: {
