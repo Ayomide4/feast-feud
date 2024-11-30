@@ -35,6 +35,10 @@ export default function Modal({ setIsModalOpen }: Props) {
   const navigation = useNavigation<NavigationProp<RootStackParamList>>();
   const { user, loading } = useAuth();
 
+  if (user) {
+    console.log(user);
+  }
+
   const [dish, setDish] = useState<Dish>({
     dishName: "",
     category: "",

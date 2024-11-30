@@ -20,6 +20,9 @@ import { addReview } from "../api/index";
 const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
   const [target, setTarget] = useState<number | null>(null);
   const [message, setMessage] = useState<string>("");
+  if (props.currentDish) {
+    console.log("from review", props.currentDish);
+  }
 
   const handleStarPress = (index: number) => {
     setTarget(index);
@@ -48,10 +51,13 @@ const Review = forwardRef((props: any, ref: React.Ref<TextInput>) => {
       }
 
       // Attempt to add the review
-      await addReview({
-        starRating: target + 1, // Ensure 1-based star rating
-        message: message.trim(), // Trim unnecessary spaces
-      });
+      await addReview(
+        {
+          starRating: target + 1, // Ensure 1-based star rating
+          message: message.trim(), // Trim unnecessary spaces
+        },
+        props.currentDish,
+      );
 
       if (ref) {
         ref.current.blur();

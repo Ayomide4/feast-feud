@@ -1,4 +1,11 @@
-import React, { createContext, useState, useContext, useEffect } from "react";
+import React, {
+  createContext,
+  useState,
+  useContext,
+  useEffect,
+  ReactNode,
+  SetStateAction,
+} from "react";
 import { getDishes } from "../api";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebaseConfig";
@@ -8,6 +15,11 @@ interface SearchContextType {
   filteredDishes: Dish[];
   setSearchQuery: (query: string) => void;
   setDishes: (dishes: Dish[]) => void;
+}
+interface Props {
+  children: ReactNode;
+  dishes: Dish[];
+  setDishes: React.Dispatch<SetStateAction<Dish[]>>;
 }
 
 const SearchContext = createContext<SearchContextType | undefined>(undefined);
@@ -38,44 +50,15 @@ const SearchContext = createContext<SearchContextType | undefined>(undefined);
  */
 export const SearchProvider = ({
   children,
-}: {
-  children: React.ReactNode;
-}): JSX.Element => {
+  dishes,
+  setDishes,
+}: Props): JSX.Element => {
   const [searchQuery, setSearchQuery] = useState<string>("");
-  const [dishes, setDishes] = useState<Dish[]>([]);
   const filteredDishes: Dish[] = dishes.filter((dish) =>
     dish.dishName.toLowerCase().includes(searchQuery.toLowerCase()),
   );
 
-  const [isLoading, setIsLoading] = useState(false);
-
-  useEffect(() => {
-    // Set up the real-time listener
-    const dishesQuery = query(
-      collection(db, "dishes"),
-      orderBy("createdAt", "asc"),
-    );
-
-    const unsubscribe = onSnapshot(
-      dishesQuery,
-      (snapshot) => {
-        const updatedDishes: Dish[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as Dish[]),
-        }));
-
-        setDishes(updatedDishes); // Update the state with the latest dishes
-        setIsLoading(false);
-      },
-      (error) => {
-        console.error("Error fetching real-time updates:", error);
-        setIsLoading(false);
-      },
-    );
-
-    // Cleanup the listener when the component unmounts
-    return () => unsubscribe();
-  }, []); // Empty dependency array ensures this runs once when the component mounts
+  useEffect(() => {}, []);
 
   // useEffect(() => {
   //   const fetchDishes = async () => {

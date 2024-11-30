@@ -23,13 +23,16 @@ export async function testAuth() {
     .catch((error) => console.error(error));
 }
 
-export async function addReview(review: Review) {
+export async function addReview(review: Review, dish: Dish) {
   try {
     const reviewsCollection = collection(db, "reviews");
+
+    const dishRef = doc(db, "dishes", dish.id);
 
     const docRef = await addDoc(reviewsCollection, {
       ...review,
       createdAt: Timestamp.now(), // Add a timestamp to track when the review was added
+      dish: dishRef,
     });
 
     console.log("Review added with ID:", docRef.id);

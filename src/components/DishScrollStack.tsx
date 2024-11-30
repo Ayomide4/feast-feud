@@ -1,4 +1,4 @@
-import React, { Key, useEffect, useState } from "react";
+import React, { Key, SetStateAction, useEffect, useState } from "react";
 import { Dimensions, View, StyleSheet } from "react-native";
 import Card from "./card";
 import Carousel from "react-native-reanimated-carousel";
@@ -13,6 +13,7 @@ interface Props {
   onScrollStart?: () => void;
   onScrollEnd?: () => void;
   onSnapToItem?: (index: Number) => void;
+  setCurrentDish: React.Dispatch<SetStateAction<Dish | undefined>>;
 }
 interface StackSlideAnimation {
   transform: [{ translateX: number }, { scale: number }];
@@ -52,6 +53,7 @@ export default function DishScrollStack({
   onScrollStart,
   onScrollEnd,
   onSnapToItem,
+  setCurrentDish,
 }: Props): JSX.Element {
   const width: number = Dimensions.get("window").width;
   const { filteredDishes } = useSearch();
@@ -118,7 +120,7 @@ export default function DishScrollStack({
         customAnimation={stackSlideAnimation}
         onScrollStart={onScrollStart}
         onScrollEnd={onScrollEnd}
-        onSnapToItem={(index) => console.log(filteredDishes[index].dishName)}
+        onSnapToItem={(index) => setCurrentDish(filteredDishes[index])}
       />
     </View>
   );

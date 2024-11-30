@@ -15,14 +15,48 @@ import Modal from "../components/modal";
 import DishScrollStack from "../components/DishScrollStack";
 import OnboardingSwipeInstructions from "../components/OnboardingSwipeInstructions";
 import { useOnboarding } from "../hooks/UseOnboarding";
-import { SearchProvider, useSearch } from "../contexts/SearchProvider";
+import { SearchProvider } from "../contexts/SearchProvider";
 import DishSearchBar from "../components/DishSearchBar";
 import { getDishes } from "../api";
+import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
+import { db } from "../firebaseConfig";
 
 export default function PartyScreen() {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { showOnboarding, finishOnboarding } = useOnboarding();
   const reviewRef = useRef<TextInput>(null);
+  const [currentDish, setCurrentDish] = useState<Dish | undefined>(undefined);
+
+  const [dishes, setDishes] = useState<Dish[]>([]);
+  const [isLoading, setIsLoading] = useState(false);
+
+  useEffect(() => {
+    // Set up the real-time listener
+    const dishesQuery = query(
+      collection(db, "dishes"),
+      orderBy("createdAt", "asc"),
+    );
+
+    const unsubscribe = onSnapshot(
+      dishesQuery,
+      (snapshot) => {
+        const updatedDishes: Dish[] = snapshot.docs.map((doc) => ({
+          id: doc.id,
+          ...(doc.data() as Dish[]),
+        }));
+
+        setDishes(updatedDishes); // Update the state with the latest dishes
+        setIsLoading(false);
+      },
+      (error) => {
+        console.error("Error fetching real-time updates:", error);
+        setIsLoading(false);
+      },
+    );
+
+    // Cleanup the listener when the component unmounts
+    return () => unsubscribe();
+  }, []); // Empty dependency array ensures this runs once when the component mounts
 
   return (
     <SafeAreaView style={styles.container}>
@@ -50,12 +84,12 @@ export default function PartyScreen() {
             showsVerticalScrollIndicator={false}
             keyboardShouldPersistTaps="handled"
           >
-            <SearchProvider>
+            <SearchProvider dishes={dishes} setDishes={setDishes}>
               <DishSearchBar />
-              <DishScrollStack />
+              <DishScrollStack setCurrentDish={setCurrentDish} />
             </SearchProvider>
 
-            <Review ref={reviewRef} />
+            <Review ref={reviewRef} currentDish={currentDish} />
           </ScrollView>
         </KeyboardAvoidingView>
       </View>

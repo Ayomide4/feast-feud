@@ -7,6 +7,7 @@ interface User {
 }
 
 interface Dish {
+  id: string;
   dishId: string;
   dishName: string;
   category: string;
