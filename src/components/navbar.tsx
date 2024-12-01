@@ -5,20 +5,16 @@ import Add from "../../assets/svg/add";
 import Messages from "../../assets/svg/messages";
 import { SetStateAction, useState } from "react";
 import React from "react";
-import { getBestRatedDishes } from "../api";
 
 interface Props {
+  navigation?: any;
   setIsModalOpen: React.Dispatch<SetStateAction<boolean>>;
 }
-export default function NavBar({ setIsModalOpen }: Props) {
+export default function NavBar({navigation, setIsModalOpen }: Props) {
   const handleFeature = () => {
     Alert.alert("Feature not implemented yet :(");
   };
 
-  const test = async () => {
-    const rating = await getBestRatedDishes();
-    console.log(rating);
-  };
   return (
     <View style={styles.container}>
       <LinearGradient
@@ -27,13 +23,13 @@ export default function NavBar({ setIsModalOpen }: Props) {
         end={{ x: 0.05, y: 1 }}
       >
         <View style={styles.iconContainer}>
-          <Pressable onPress={handleFeature}>
+          <Pressable onPress={() => {navigation.navigate('Party')}}>
             <Home width={40} height={40} />
           </Pressable>
           <Pressable onPress={() => setIsModalOpen(true)}>
             <Add width={50} height={50} />
           </Pressable>
-          <Pressable onPress={handleFeature}>
+          <Pressable onPress={() => {navigation.navigate('YourReviews')}}>
             <Messages width={45} height={50} />
           </Pressable>
         </View>

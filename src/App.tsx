@@ -8,10 +8,11 @@ import Login from "./screens/Login";
 import Register from "./screens/Register";
 import { useEffect } from "react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { AuthProvider } from "./context/AuthContext";
+import { AuthProvider } from "./contexts/AuthContext";
 import Toast from "react-native-toast-message";
 import { toastConfig } from "./utils/toastConfig";
 import { SearchProvider } from "./contexts/SearchProvider";
+import YourReviews from "./screens/YourReviews";
 
 const Stack = createNativeStackNavigator();
 
@@ -68,6 +69,11 @@ export default function App() {
                 options={{ headerShown: false }}
               />
               <Stack.Screen
+              name="YourReviews"
+              component={YourReviews}
+              options={{ headerShown: false }}
+            />
+              <Stack.Screen
                 name="Register"
                 component={Register}
                 options={{ headerShown: false }}
@@ -77,6 +83,7 @@ export default function App() {
         </GestureHandlerRootView>
         <Toast config={toastConfig} />
       </SearchProvider>
+      <Toast config={toastConfig} />
     </AuthProvider>
   );
 }
