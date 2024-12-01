@@ -20,7 +20,11 @@ import DishSearchBar from "../components/DishSearchBar";
 import { collection, onSnapshot, orderBy, query } from "firebase/firestore";
 import { db } from "../firebaseConfig";
 
-export default function PartyScreen() {
+interface Props {
+  navigation?: any;
+}
+
+export default function PartyScreen({navigation}: Props) {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const { showOnboarding, finishOnboarding } = useOnboarding();
   const { setDishes } = useSearch();
@@ -34,17 +38,19 @@ export default function PartyScreen() {
       collection(db, "dishes"),
       orderBy("createdAt", "asc"),
     );
-
+    
     const unsubscribe = onSnapshot(
       dishesQuery,
       (snapshot) => {
-        const updatedDishes: Dish[] = snapshot.docs.map((doc) => ({
-          id: doc.id,
-          ...(doc.data() as Dish[]),
-        }));
+        const updatedDishes: Dish[] = snapshot.docs.map((doc) => {
+          const data = doc.data() as Dish;
+          return {
+            ...data,
+            id: doc.id,
+          };
+        });
 
         setDishes(updatedDishes);
-        setIsLoading(false);
         console.log("start", updatedDishes[0]);
         setCurrentDish(updatedDishes[0]);
       },
@@ -90,7 +96,7 @@ export default function PartyScreen() {
           </ScrollView>
         </KeyboardAvoidingView>
       </View>
-      <NavBar setIsModalOpen={setIsModalOpen} />
+      <NavBar navigation={navigation} setIsModalOpen={setIsModalOpen} />
       {isModalOpen && <Modal setIsModalOpen={setIsModalOpen} />}
     </SafeAreaView>
   );

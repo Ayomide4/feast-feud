@@ -9,12 +9,13 @@ import {
   addDoc,
   collection,
   doc,
-  getDoc,
+  DocumentReference,
   getDocs,
   orderBy,
   query,
   setDoc,
   Timestamp,
+  where,
 } from "firebase/firestore";
 
 export async function testAuth() {
@@ -98,17 +99,37 @@ export async function signUp(user: any) {
 }
 
 /**
- * Fetches dishes from Firestore and optionally combines them with provided reviews.
- *
- * @param {Review[]} [reviews] - Optional array of reviews to combine with dishes. If not provided, reviews will be fetched from Firestore.
- * @returns {Promise<Dish[]>} - A promise that resolves to an array of dishes, each potentially combined with related reviews.
- * @throws {Error} - Throws an error if fetching dishes or reviews from Firestore fails.
+ * Fetches dishes from Firestore and combines them with their associated reviews.
+ * 
+ * @param reviews - Optional array of Review objects to use instead of fetching from database
+ * @param userRefernce - Optional DocumentReference to filter dishes by user
+ * @returns Promise that resolves to an array of Dish objects with their associated reviews
+ * @throws Error if fetching dishes or reviews fails
+ * 
+ * @example
+ * ```typescript
+ * // Get all dishes with their reviews
+ * const dishes = await getDishes();
+ * 
+ * // Get dishes for a specific user
+ * const userDishes = await getDishes(null, userRef);
+ * 
+ * // Get dishes with provided reviews
+ * const dishesWithReviews = await getDishes(existingReviews);
+ * ```
  */
-export async function getDishes(reviews?: Review[]): Promise<Dish[]> {
+export async function getDishes(reviews?: Review[]|null, userRefernce?: DocumentReference): Promise<Dish[]> {
   try {
     const reviewList = reviews && reviews.length > 0 ? reviews : await getReviews();
 
-    const dishesQuery = query(
+    const dishesQuery =
+    userRefernce ? 
+    query(
+      collection(db, "dishes"),
+      where("user", "==", userRefernce),
+      orderBy("createdAt", "asc")
+    )
+    : query(
       collection(db, "dishes"),
       orderBy("createdAt", "asc")
     );
@@ -151,31 +172,36 @@ export async function getDishes(reviews?: Review[]): Promise<Dish[]> {
 }
 
 /**
- * Fetches reviews from the Firestore database.
- *
- * @returns {Promise<Review[]>} A promise that resolves to an array of reviews.
- * @throws Will throw an error if there is an issue fetching reviews from Firestore.
- *
+ * Retrieves reviews from Firestore database.
+ * If a dish reference is provided, returns reviews for that specific dish.
+ * If no dish reference is provided, returns all reviews.
+ * Reviews are ordered by creation date in ascending order.
+ * 
+ * @param dish - Optional DocumentReference for a specific dish to filter reviews
+ * @returns Promise containing an array of Review objects
+ * @throws Error if the database query fails
+ * 
  * @example
- * ```typescript
- * getReviews()
- *   .then((reviews) => {
- *     console.log(reviews);
- *   })
- *   .catch((error) => {
- *     console.error(error);
- *   });
- * ```
+ * // Get all reviews
+ * const allReviews = await getReviews();
+ * 
+ * // Get reviews for a specific dish
+ * const dishReviews = await getReviews(dishReference);
  */
-export async function getReviews(): Promise<Review[]> {
+export async function getReviews(dish? : DocumentReference | null): Promise<Review[]> {
   try {
-    const reviewsQuery = query(
+    const reviewsQuery = 
+    dish != null ? query(
+      collection(db, "reviews"),
+      where("dish", "==", dish),
+      orderBy("createdAt", "asc")
+    ) : 
+    query(
       collection(db, "reviews"),
       orderBy("createdAt", "asc")
-    );
+      );
 
     const querySnapshot = await getDocs(reviewsQuery);
-
     if (querySnapshot.empty) {
       console.warn("No reviews found in the database.");
       return [];

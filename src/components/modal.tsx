@@ -8,7 +8,7 @@ import Gallery from "../../assets/svg/gallery";
 import Trash from "../../assets/svg/trash";
 import React, { SetStateAction, useContext, useState } from "react";
 import * as ImagePicker from "expo-image-picker";
-import { useAuth } from "../context/AuthContext";
+import { useAuth } from "../contexts/AuthContext";
 import { useNavigation, NavigationProp } from "@react-navigation/native";
 import { addDish } from "../api";
 import Toast from "react-native-toast-message";
